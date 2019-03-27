@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>c&#43;&#43; basic复习 - Sun.StriKE&#39;s Tech Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Sun.StriKE" /><meta name="description" content="基础知识 长时间写python的后遗症，cpp的一些基础知识都忘得差不多了，需要强化一下记忆。
+" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://sunstrikes.tech/post/c&#43;&#43;-basic%E5%A4%8D%E4%B9%A0/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="c&#43;&#43; basic复习" />
+<meta property="og:description" content="基础知识
+
+长时间写python的后遗症，cpp的一些基础知识都忘得差不多了，需要强化一下记忆。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunstrikes.tech/post/c&#43;&#43;-basic%E5%A4%8D%E4%B9%A0/" />
+<meta property="article:published_time" content="2019-03-26T14:32:12&#43;08:00"/>
+<meta property="article:modified_time" content="2019-03-26T14:32:12&#43;08:00"/>
+
+<meta itemprop="name" content="c&#43;&#43; basic复习">
+<meta itemprop="description" content="基础知识
+
+长时间写python的后遗症，cpp的一些基础知识都忘得差不多了，需要强化一下记忆。">
+
+
+<meta itemprop="datePublished" content="2019-03-26T14:32:12&#43;08:00" />
+<meta itemprop="dateModified" content="2019-03-26T14:32:12&#43;08:00" />
+<meta itemprop="wordCount" content="1984">
+
+
+
+<meta itemprop="keywords" content="C&#43;&#43;," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="c&#43;&#43; basic复习"/>
+<meta name="twitter:description" content="基础知识
+
+长时间写python的后遗症，cpp的一些基础知识都忘得差不多了，需要强化一下记忆。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Sun.StriKE&#39;s Tech Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Sun.StriKE&#39;s Tech Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">c&#43;&#43; basic复习</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-03-26 </span>
+        <div class="post-category">
+            <a href="/categories/c&#43;&#43;/"> C&#43;&#43; </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#基础知识">基础知识</a></li>
+<li><a href="#stl">STL</a></li>
+<li><a href="#继承与多态">继承与多态</a>
+<ul>
+<li>
+<ul>
+<li><a href="#智能指针">智能指针：</a></li>
+<li><a href="#virtual关键字作用">virtual关键字作用：</a></li>
+<li><a href="#虚函数表-链接-https-blog-csdn-net-haoel-article-details-1948051">虚函数表：<a href="https://blog.csdn.net/haoel/article/details/1948051/">链接</a></a></li>
+<li><a href="#c语言实现多态">C语言实现多态：</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#泛型">泛型</a>
+<ul>
+<li>
+<ul>
+<li><a href="#模板特化与偏特化-比如stl-vector-class-t-class-allocator">模板特化与偏特化：比如stl::vector<class T, class Allocator></a></li>
+<li><a href="#左值与右值">左值与右值</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h3 id="基础知识">基础知识</h3>
+
+<p>长时间写python的后遗症，cpp的一些基础知识都忘得差不多了，需要强化一下记忆。</p>
+
+<ol>
+<li><p>四种cast</p>
+
+<ul>
+<li><code>reinpreter_cast</code> 非相关的类型之间转换。操作结果只是简单的从一个指针到别的指针的值的二进制拷贝。在类型之间指向的内容不做任何类型的检查和转换</li>
+<li><code>const_cast</code>用于修改类型的const或volatile属性。除了const 或volatile修饰之外，type_id和expression的类型是一样的，一般用于强制消除对象的常量性。</li>
+<li><code>static_cast</code>但没有运行时类型检查来保证转换的安全性。它允许执行任意的隐式转换和相反转换动作,主要包括：1 用于基本数据类型之间的转换 2 把空指针转换成目标类型的指针 3 把任何类型的表达式转换成void类型 4 应用到类的指针上，它允许子类类型的指针互相转换为父类类型的指针</li>
+<li><code>dynamic_cast</code>只用于对象的指针和引用，主要用于执行“安全的向下转型”，可能有重大运行时代价, dynamic_cast根据RTTI信息检查操作是否有效。即在转换时dynamic_cast会检查转换是否能返回一个被请求的有效的完整对象。需要有虚函数才能判断，上行转换时，dynamic_cast和static_cast的效果是一样的；在进行下行转换时（基类需要包含虚函数），dynamic_cast具有类型检查的功能，牺牲了效率，但比static_cast安全。</li>
+</ul></li>
+
+<li><p>constexpr 与 const 区别</p></li>
+</ol>
+
+<p>constexpr表示这玩意儿在编译期就可以算出来（前提是为了算出它所依赖的东西也是在编译期可以算出来的）。而const只保证了运行时不直接被修改（但这个东西仍然可能是个动态变量）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp">   <span class="k">constexpr</span> <span class="kt">int</span> <span class="nf">foo</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">){</span>
+       <span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">5</span><span class="p">;</span>
+   <span class="p">}</span>
+   <span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+       <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+       <span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">foo</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">arr</span><span class="p">;</span> <span class="c1">// OK 
+</span><span class="c1"></span>       <span class="n">foo</span><span class="p">(</span><span class="n">i</span><span class="p">);</span> <span class="c1">// Call is Ok
+</span><span class="c1"></span>       <span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">foo</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">arr1</span><span class="p">;</span> <span class="c1">// Error 
+</span><span class="c1"></span>   <span class="p">}</span>
+   
+</code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="stl">STL</h3>
+
+<ol>
+<li><p><code>std::sort()</code>的复杂度 参考<a href="https://liam.page/2018/08/29/introspective-sort/">stl 分析</a></p>
+
+<ul>
+<li>复杂度计算  log2n!次比较。这就是基于比较的排序算法的复杂度下界：Ω(logn!) 斯特灵级数展开，近似 = nlogn</li>
+<li>内省式排序
+
+<ul>
+<li>在数据量足够大的情况使用快速排序；</li>
+<li>在快速排序掉入陷阱(一旦递归深度超出该阈值，初始值为<code>__lg(last - first) * 2</code>，即 2log2n，则认掉入陷阱)时，主动切换到堆排序；避免o(n2)的情况</li>
+<li>快排 主元选择了首元素、尾元素和中央位置元素三者中的中位数，不容易让快排掉入陷阱</li>
+<li>在快速排序和堆排序已经做到基本有序的情况下，或者数据量较小的情况下，主动切换到插入排序</li>
+</ul></li>
+</ul></li>
+
+<li><p>vector<bool>与其他vector有什么区别?</p></li>
+</ol>
+
+<p>这里面存的每个bool以一个bit位为一个存储单元，deque<bool>以一个byte为存储单元，为了优化空间性能</p>
+
+<h3 id="继承与多态">继承与多态</h3>
+
+<p>继承：虚继承，解决菱形继承问题，c++对象模型(vtable)</p>
+
+<p>多态：静态(编译期)：函数重载  动态(运行时)：虚函数  隐藏：子类函数覆盖父类函数功能</p>
+
+<h5 id="智能指针">智能指针：</h5>
+
+<ul>
+<li><strong>unique_ptr：</strong> 如果内存资源的所有权不需要共享，就应当使用这个（它没有拷贝构造函数），但是它可以转让给另一个unique_ptr（存在move构造函数）。</li>
+<li><strong>shared_ptr：</strong> 如果内存资源需要共享，那么使用这个（所以叫这个名字）。</li>
+<li><strong>weak_ptr：</strong> 持有被shared_ptr所管理对象的引用，但是不会改变引用计数值。它被用来打破<strong>依赖循环</strong>（想象在一个tree结构中，父节点通过一个共享所有权的引用(shared_ptr)引用子节点，同时子节点又必须持有父节点的引用。如果这第二个引用也共享所有权，就会导致一个循环，最终两个节点内存都无法释放）。</li>
+</ul>
+
+<h5 id="virtual关键字作用">virtual关键字作用：</h5>
+
+<ul>
+<li>虚函数，提供重写多态</li>
+<li>纯虚函数+override：提供接口类</li>
+<li>虚析构：使得释放基类指针是能向下转型释放子类内存，避免内存泄漏</li>
+<li>虚继承：菱形继承问题</li>
+</ul>
+
+<h5 id="虚函数表-链接-https-blog-csdn-net-haoel-article-details-1948051">虚函数表：<a href="https://blog.csdn.net/haoel/article/details/1948051/">链接</a></h5>
+
+<h5 id="c语言实现多态">C语言实现多态：</h5>
+
+<p>1.函数重载 <code>__VA_ARGS__</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#define func(...) myfunc((struct mystru) { __VA_ARGS__})
+</span><span class="cp"></span><span class="k">struct</span> <span class="n">mystru</span> <span class="p">{</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">d</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">number</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="kt">void</span> <span class="nf">myfunc</span><span class="p">(</span><span class="k">struct</span> <span class="n">mystru</span> <span class="n">ms</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%s, %lf, %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">ms</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ms</span><span class="p">.</span><span class="n">d</span><span class="p">,</span> <span class="n">ms</span><span class="p">.</span><span class="n">number</span><span class="p">);</span>
+<span class="p">}</span>
+ 
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+    <span class="n">func</span><span class="p">();</span>
+    <span class="n">func</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">);</span>
+    <span class="n">func</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">);</span>
+    <span class="n">func</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+    <span class="n">func</span><span class="p">(.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#34;hello&#34;</span><span class="p">);</span>
+    <span class="n">func</span><span class="p">(.</span><span class="n">d</span> <span class="o">=</span> <span class="mf">1.1</span><span class="p">);</span>
+    <span class="n">func</span><span class="p">(.</span><span class="n">number</span> <span class="o">=</span> <span class="mi">100</span><span class="p">);</span>
+    <span class="n">func</span><span class="p">(.</span><span class="n">d</span> <span class="o">=</span> <span class="mf">1.1</span><span class="p">,</span> <span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#34;hello&#34;</span><span class="p">);</span>
+	<span class="k">return</span> <span class="n">EXIT_SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>2.虚函数：函数指针实现虚表</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">Node</span><span class="o">*</span> <span class="n">linkList</span><span class="p">;</span> 
+<span class="k">struct</span> <span class="n">Node</span>                                         <span class="c1">// 链表节点
+</span><span class="c1"></span><span class="p">{</span> 
+   <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">;</span>                                 <span class="c1">// 存储的数据指针
+</span><span class="c1"></span>   <span class="n">linkList</span> <span class="n">next</span><span class="p">;</span>                              <span class="c1">// 指向下一个链表节点
+</span><span class="c1"></span> 
+   <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">insertFirst</span><span class="p">)(</span><span class="n">linkList</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">);</span>      <span class="c1">// 在已有链表的表头进行插入节点操作的函数指针
+</span><span class="c1"></span>   <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">linkListOutput</span><span class="p">)(</span><span class="n">linkList</span><span class="p">);</span>           <span class="c1">// 输出链表中数据到控制台操作的函数指针
+</span><span class="c1"></span><span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="泛型">泛型</h3>
+
+<h5 id="模板特化与偏特化-比如stl-vector-class-t-class-allocator">模板特化与偏特化：比如stl::vector<class T, class Allocator></h5>
+
+<p>函数模板只有全特化，没有偏特化</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">//泛化
+</span><span class="c1"></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="err"> </span><span class="nc">U</span><span class="p">,</span> <span class="k">class</span><span class="err"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">class</span><span class="err"> </span><span class="nc">Test</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Test</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Test 泛化&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+<span class="c1">//偏特化
+</span><span class="c1"></span><span class="k">template</span><span class="o">&lt;</span> <span class="k">class</span><span class="err"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">class</span><span class="err"> </span><span class="nc">Test</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="n">T</span><span class="o">&gt;</span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Test</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Test 偏特化&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+<span class="c1">//全特化
+</span><span class="c1"></span><span class="k">template</span><span class="o">&lt;&gt;</span>
+<span class="k">class</span><span class="err"> </span><span class="nc">Test</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">char</span><span class="o">&gt;</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Test</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Test 全特化&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<h5 id="左值与右值">左值与右值</h5>
+
+<p>T&amp; 指向的是 lvalue，而 const T&amp; 指向的，却可能是 lvalue 或 rvalue</p>
+
+<p><code>move() 是这样一个函数，它接受一个参数，然后返回一个该参数对应的右值引用.</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="mi">1</span> <span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span>
+<span class="mi">2</span> <span class="p">{</span>
+<span class="mi">3</span>      <span class="n">T</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">move</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+<span class="mi">4</span>      <span class="n">a</span> <span class="o">=</span> <span class="n">move</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+<span class="mi">5</span>      <span class="n">b</span> <span class="o">=</span> <span class="n">move</span><span class="p">(</span><span class="n">tmp</span><span class="p">);</span>
+<span class="mi">6</span> <span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>forward() 函数的作用：它接受一个参数，然后返回该参数本来所对应的类型的引用。常和remove_reference配合使用</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Sun.StriKE</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-03-26
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/c&#43;&#43;/">C&#43;&#43;</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/pytorch-1-tensor-optim/">
+            <span class="next-text nav-default">Pytorch源码阅读-ch1-tensor&amp;optim</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="comments-gitment"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitment@0.0.3/style/default.min.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitment@0.0.3/dist/gitment.browser.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitment = new Gitment({
+        id: '2019-03-26 14:32:12 \x2b0800 CST',
+        title: 'c\x2b\x2b basic复习',
+        link: decodeURI(location.href),
+        desc: '\x3ch3 id=\x22基础知识\x22\x3e基础知识\x3c\/h3\x3e\n\n\x3cp\x3e长时间写python的后遗症，cpp的一些基础知识都忘得差不多了，需要强化一下记忆。\x3c\/p\x3e',
+        owner: 'sunstrikes',
+        repo: 'sunstrikes.github.io',
+        oauth: {
+          client_id: '',
+          client_secret: ''
+        }
+      });
+      gitment.render('comments-gitment');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/imsun/gitment">comments powered by gitment.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://localhost:1313" class="iconfont icon-github" title="github"></a>
+  <a href="https://sunstrikes.tech/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Sun.StriKE</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
