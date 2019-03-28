@@ -266,25 +266,29 @@
     </footer>
   </article>
         </div>
-        <div id="comments-gitment"></div>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitment@0.0.3/style/default.min.css" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/gitment@0.0.3/dist/gitment.browser.min.js" crossorigin="anonymous"></script>
-    <script type="text/javascript">
-      var gitment = new Gitment({
-        id: '2018-01-22 13:31:20 \x2b0800 CST',
-        title: 'pandas使用',
-        link: decodeURI(location.href),
-        desc: '\x3ch3 id=\x22pandas\x22\x3ePandas\x3c\/h3\x3e\n\n\x3cp\x3e一种列存数据分析 API。它是用于处理和分析输入数据的强大工具，很多机器学习框架都支持将 \x3cem\x3epandas\x3c\/em\x3e 数据结构作为输入。\x3c\/p\x3e',
-        owner: 'sunstrikes',
-        repo: 'sunstrikes.github.io',
-        oauth: {
-          client_id: '',
-          client_secret: ''
-        }
-      });
-      gitment.render('comments-gitment');
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://github.com/imsun/gitment">comments powered by gitment.</a></noscript>
+        
+  <span id="/post/pandas/" class="leancloud_visitors" data-flag-title="pandas使用">
+    <span class="post-meta-item-text">文章阅读量 </span>
+    <span class="leancloud-visitors-count">1000000</span>
+    <p></p>
+  </span>
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'gByHJOoMt4M4WCoHEznYmd8f-gzGzoHsz',
+        appKey: 'S95cz7uUC0z5lN06564jD0mf',
+        notify:  true ,
+        verify:  false ,
+        avatar:'mm',
+        placeholder: '说点什么吧...',
+        visitor:  true 
+    });
+  </script>
+
+  
 
       </div>
     </main>
