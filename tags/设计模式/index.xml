@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>设计模式 on Sun.StriKE&#39;s Blog</title>
+    <link>https://sunstrikes.tech/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link>
+    <description>Recent content in 设计模式 on Sun.StriKE&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 03 Apr 2018 16:06:33 +0800</lastBuildDate>
+    
+	<atom:link href="https://sunstrikes.tech/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>modern C&#43;&#43; DesignPattern: Part1</title>
+      <link>https://sunstrikes.tech/post/designpattern-part1/</link>
+      <pubDate>Tue, 03 Apr 2018 16:06:33 +0800</pubDate>
+      
+      <guid>https://sunstrikes.tech/post/designpattern-part1/</guid>
+      <description>&lt;p&gt;现代c++改变了很多设计模式的实现方式，为了保持与时俱进，阅读了&amp;rdquo;Design Pattern in Modern C++&amp;ldquo;这本书，会记录下来在阅读中的一些心得体会，Part1主要包括 工厂模式，建造者模式与单例模式的现代实现&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -3,6 +3,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://sunstrikes.tech/about/</loc>
+    <lastmod>2019-03-28T17:00:14+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://sunstrikes.tech/post/c&#43;&#43;-basic%E5%A4%8D%E4%B9%A0/</loc>
     <lastmod>2019-03-27T16:54:39+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -33,6 +40,13 @@
   <url>
     <loc>https://sunstrikes.tech/post/brpc-internal/</loc>
     <lastmod>2019-03-27T16:54:39+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://sunstrikes.tech/post/designpattern-part1/</loc>
+    <lastmod>2018-04-03T16:06:33+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -88,7 +102,7 @@
   
   <url>
     <loc>https://sunstrikes.tech/</loc>
-    <lastmod>2019-03-27T16:54:39+08:00</lastmod>
+    <lastmod>2019-03-28T17:00:14+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -145,6 +159,13 @@
   <url>
     <loc>https://sunstrikes.tech/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2019-03-27T16:54:39+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://sunstrikes.tech/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
+    <lastmod>2018-04-03T16:06:33+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
