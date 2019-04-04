@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>modern C&#43;&#43; DesignPattern-Part2 - Sun.StriKE&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Sun.StriKE" /><meta name="description" content="Part2设计模式和结构化有较强的联系，分成两个part来解释，这篇主要包括桥接，适配器，装饰器这三种
+" /><meta name="keywords" content="设计模式, C&#43;&#43;" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://sunstrikes.tech/post/designpattern-part2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.996c8896.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="modern C&#43;&#43; DesignPattern-Part2" />
+<meta property="og:description" content="Part2设计模式和结构化有较强的联系，分成两个part来解释，这篇主要包括桥接，适配器，装饰器这三种" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunstrikes.tech/post/designpattern-part2/" />
+<meta property="article:published_time" content="2018-04-10T19:08:49&#43;08:00"/>
+<meta property="article:modified_time" content="2019-04-04T17:16:52&#43;08:00"/>
+
+<meta itemprop="name" content="modern C&#43;&#43; DesignPattern-Part2">
+<meta itemprop="description" content="Part2设计模式和结构化有较强的联系，分成两个part来解释，这篇主要包括桥接，适配器，装饰器这三种">
+
+
+<meta itemprop="datePublished" content="2018-04-10T19:08:49&#43;08:00" />
+<meta itemprop="dateModified" content="2019-04-04T17:16:52&#43;08:00" />
+<meta itemprop="wordCount" content="1166">
+
+
+
+<meta itemprop="keywords" content="设计模式," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="modern C&#43;&#43; DesignPattern-Part2"/>
+<meta name="twitter:description" content="Part2设计模式和结构化有较强的联系，分成两个part来解释，这篇主要包括桥接，适配器，装饰器这三种"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Sun.StriKE&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Sun.StriKE&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">modern C&#43;&#43; DesignPattern-Part2</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-04-10 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#bridge">Bridge</a></li>
+<li><a href="#composite">Composite</a></li>
+<li><a href="#decorator">Decorator</a>
+<ul>
+<li><a href="#dynamic-decorator">Dynamic Decorator</a></li>
+<li><a href="#static-decorator">Static Decorator</a></li>
+<li><a href="#functional-decorator">Functional Decorator</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>Part2设计模式和结构化有较强的联系，分成两个part来解释，这篇主要包括桥接，适配器，装饰器这三种</p>
+
+<h2 id="bridge">Bridge</h2>
+
+<p>优点：</p>
+
+<ul>
+<li>通过这种模式可以将大量的没用到的成员与方法隐藏起来，只暴露出公用接口，降低复杂性</li>
+<li>可以通过前向声明 impl，把大量的include放到 impl.cpp里面，降低编译成本</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="n">Person</span><span class="p">{</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">name</span><span class="p">;</span>
+  <span class="k">class</span><span class="err"> </span><span class="nc">PersonImpl</span><span class="p">;</span>
+  <span class="n">PersonImpl</span> <span class="o">*</span><span class="n">impl</span><span class="p">;</span> <span class="c1">// bridge - not necessarily inner class, can vary
+</span><span class="c1"></span>  <span class="n">Person</span><span class="p">();</span>
+  <span class="o">~</span><span class="n">Person</span><span class="p">();</span>
+  <span class="kt">void</span> <span class="nf">greet</span><span class="p">();</span>
+<span class="p">};</span>
+<span class="k">struct</span> <span class="n">Person</span><span class="o">::</span><span class="n">PersonImpl</span>
+<span class="p">{</span>
+  <span class="kt">void</span> <span class="n">greet</span><span class="p">(</span><span class="n">Person</span><span class="o">*</span> <span class="n">p</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="n">Person</span><span class="o">::</span><span class="n">PersonImpl</span><span class="o">::</span><span class="n">greet</span><span class="p">(</span><span class="n">Person</span><span class="o">*</span> <span class="n">p</span><span class="p">){</span>
+  <span class="n">printf</span><span class="p">(</span><span class="s">&#34;hello %s&#34;</span><span class="p">,</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+<span class="p">}</span>
+<span class="n">Person</span><span class="o">::</span><span class="n">Person</span><span class="p">()</span><span class="o">:</span> <span class="n">impl</span><span class="p">(</span><span class="k">new</span> <span class="n">PersonImpl</span><span class="p">){}</span>
+<span class="n">Person</span><span class="o">::~</span><span class="n">Person</span><span class="p">(){</span>  <span class="k">delete</span> <span class="n">impl</span><span class="p">;}</span>
+<span class="kt">void</span> <span class="n">Person</span><span class="o">::</span><span class="n">greet</span><span class="p">(){</span> <span class="n">impl</span><span class="o">-&gt;</span><span class="n">greet</span><span class="p">(</span><span class="k">this</span><span class="p">);}</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>这个例子就是通过PersonImpl把大量的实现细节隐藏到了这个类里面，brpc中的server搭建就有很经典的使用. ==tips==: <a href="https://zh.cppreference.com/w/cpp/language/pimpl">Plmpl 编译防火墙</a> 解除了接口与实现之间的耦合关系，从而降低文件间的编译依赖关系</p>
+
+<hr />
+
+<h2 id="composite">Composite</h2>
+
+<p>这个模式比较简单，直接看代码，这是神经网络的neuron类例子</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">Self</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">SomeNeurons</span> <span class="p">{</span>  <span class="c1">//主要是为了封装connect_to
+</span><span class="c1"></span>  <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="n">connect_to</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">){</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">Neuron</span><span class="o">&amp;</span> <span class="nl">from</span> <span class="p">:</span> <span class="o">*</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">Self</span><span class="o">*&gt;</span><span class="p">(</span><span class="k">this</span><span class="p">)){</span>
+      <span class="k">for</span> <span class="p">(</span><span class="n">Neuron</span><span class="o">&amp;</span> <span class="nl">to</span> <span class="p">:</span> <span class="n">other</span><span class="p">){</span>
+        <span class="n">from</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="o">&amp;</span><span class="n">to</span><span class="p">);</span>
+        <span class="n">to</span><span class="p">.</span><span class="n">in</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="o">&amp;</span><span class="n">from</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nl">Neuron</span> <span class="p">:</span> <span class="n">SomeNeurons</span><span class="o">&lt;</span><span class="n">Neuron</span><span class="o">&gt;</span><span class="p">{</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="n">Neuron</span><span class="o">*&gt;</span> <span class="n">in</span><span class="p">,</span> <span class="n">out</span><span class="p">;</span>
+  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">id</span><span class="p">;</span>
+  <span class="n">Neuron</span><span class="p">(){</span>
+    <span class="k">static</span> <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">//static标记id，很方便
+</span><span class="c1"></span>    <span class="k">this</span><span class="o">-&gt;</span><span class="n">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">++</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">Neuron</span><span class="o">*</span> <span class="n">begin</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="k">this</span><span class="p">;</span> <span class="p">}</span>
+  <span class="n">Neuron</span><span class="o">*</span> <span class="n">end</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="k">this</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nl">NeuronLayer</span> <span class="p">:</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Neuron</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">SomeNeurons</span><span class="o">&lt;</span><span class="n">NeuronLayer</span><span class="o">&gt;</span><span class="p">{</span>
+  <span class="n">NeuronLayer</span><span class="p">(</span><span class="kt">int</span> <span class="n">count</span><span class="p">){</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">count</span><span class="o">--</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="n">emplace_back</span><span class="p">(</span><span class="n">Neuron</span><span class="p">{});</span>
+  <span class="p">}</span> <span class="c1">//继承vector用来组合neuron向量，继承SomeNeurons用来解决连接问题
+</span><span class="c1"></span><span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<hr />
+
+<h2 id="decorator">Decorator</h2>
+
+<p>C++11给这个模式带了了很多新东西，一起来看看吧</p>
+
+<h3 id="dynamic-decorator">Dynamic Decorator</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="n">Shape</span><span class="p">{</span>
+  <span class="k">virtual</span> <span class="n">string</span> <span class="n">str</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="k">struct</span> <span class="nl">ColoredShape</span> <span class="p">:</span> <span class="n">Shape</span><span class="p">{</span>  <span class="c1">//装饰类
+</span><span class="c1"></span>  <span class="n">Shape</span><span class="o">&amp;</span> <span class="n">shape</span><span class="p">;</span>
+  <span class="n">string</span> <span class="n">color</span><span class="p">;</span>
+  <span class="n">ColoredShape</span><span class="p">(</span><span class="n">Shape</span><span class="o">&amp;</span> <span class="n">shape</span><span class="p">,</span> <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">color</span><span class="p">)</span><span class="o">:</span> <span class="n">shape</span><span class="p">{</span><span class="n">shape</span><span class="p">},</span> <span class="n">color</span><span class="p">(</span><span class="n">color</span><span class="p">){}</span>
+  <span class="n">string</span> <span class="n">str</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span><span class="p">{...}</span>
+<span class="p">};</span>
+<span class="k">struct</span> <span class="nl">Circle</span><span class="p">:</span> <span class="n">Shape</span> <span class="p">{</span>
+  <span class="kt">float</span> <span class="n">radius</span><span class="p">;</span>
+  <span class="n">CirCle</span><span class="p">(</span><span class="kt">float</span> <span class="n">radius</span><span class="p">)</span><span class="o">:</span> <span class="n">radius</span><span class="p">(</span><span class="n">radius</span><span class="p">){}</span>
+  <span class="n">resize</span><span class="p">(</span><span class="kt">float</span> <span class="n">factor</span><span class="p">)</span> <span class="p">{</span><span class="n">radius</span> <span class="o">*=</span> <span class="n">factor</span><span class="p">};</span>
+  <span class="n">string</span> <span class="nf">str</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span><span class="p">{...}</span>
+<span class="p">}</span>
+
+<span class="n">Circle</span> <span class="n">circle</span><span class="p">(</span><span class="mf">0.6</span><span class="p">);</span>
+<span class="n">ColoredShape</span> <span class="nf">redCircle</span><span class="p">(</span><span class="n">circle</span><span class="p">,</span> <span class="s">&#34;red&#34;</span><span class="p">);</span> <span class="c1">//shape引用
+</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="static-decorator">Static Decorator</h3>
+
+<p>前面动态类型的一个缺点是说被修饰的redCircle无法访问circle的方法， 比如 redCircle.resize(2) 编译不通过，下面这个实现方法就是为了解决这个问题的。这个方法的缺点是再编译期进行的装饰，没法重组合。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="nl">ColoredShape</span><span class="p">:</span> <span class="n">T</span><span class="p">{</span>
+  <span class="k">static_assert</span><span class="p">(</span><span class="n">is_base_of</span><span class="o">&lt;</span><span class="n">Shape</span><span class="p">,</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">,</span> <span class="s">&#34;template arg must be a Shape&#34;</span><span class="p">);</span>
+  <span class="n">string</span> <span class="n">color</span><span class="p">;</span>
+  <span class="n">ColoredShape</span><span class="p">(</span><span class="n">Shape</span><span class="o">&amp;</span> <span class="n">shape</span><span class="p">,</span> <span class="n">string</span> <span class="n">color</span><span class="p">)</span><span class="o">:</span> <span class="n">shape</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="n">color</span><span class="p">(</span><span class="n">color</span><span class="p">){}</span>
+  <span class="n">string</span> <span class="n">str</span><span class="p">(){...}</span>
+<span class="p">};</span>
+
+<span class="n">ColoredShape</span><span class="o">&lt;</span><span class="n">TransparentShape</span><span class="o">&lt;</span><span class="n">Square</span><span class="o">&gt;&gt;</span> <span class="n">square</span><span class="p">{</span><span class="s">&#34;blue&#34;</span><span class="p">};</span> <span class="c1">//可以访问所有被修饰的层以及原本的square的所有成员
+</span><span class="c1"></span><span class="n">square</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="n">square</span><span class="p">.</span><span class="n">transparency</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+<span class="n">square</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>这里还有个缺点，通过这种方法，我们没法调用一次构造函数实现所有成员+修饰成员的初始化，解决方法为可变参数模板+类型推导</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="nl">TransparentShape</span><span class="p">:</span> <span class="n">T</span><span class="p">{</span>
+  <span class="kt">int</span> <span class="n">trans</span><span class="p">;</span>
+  <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="p">...</span><span class="n">Args</span><span class="o">&gt;</span>
+  <span class="n">TransparentShape</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="n">trans</span><span class="p">,</span> <span class="n">Args</span> <span class="p">...</span><span class="n">args</span><span class="p">)</span><span class="o">:</span> 
+  		<span class="n">T</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">Args</span><span class="o">&gt;</span><span class="p">(</span><span class="n">args</span><span class="p">)...),</span> <span class="n">trans</span><span class="p">(</span><span class="n">trans</span><span class="p">){}</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="n">ColoredShape2</span><span class="o">&lt;</span><span class="n">TransparentShape2</span><span class="o">&lt;</span><span class="n">Square</span><span class="o">&gt;&gt;</span> <span class="n">sq</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&#34;red&#34;</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">5</span> <span class="p">};</span> <span class="c1">//这样初始化就没问题了
+</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="functional-decorator">Functional Decorator</h3>
+
+<p>针对函数的装饰器</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">//1.不需要返回值
+</span><span class="c1"></span><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">Func</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">Logger2</span><span class="p">{</span>
+  <span class="n">Func</span> <span class="n">func</span><span class="p">;</span>
+  <span class="n">string</span> <span class="n">name</span><span class="p">;</span>
+  <span class="n">Logger2</span><span class="p">(</span><span class="k">const</span> <span class="n">Func</span><span class="o">&amp;</span> <span class="n">func</span><span class="p">,</span> <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">name</span><span class="p">)</span>
+    <span class="o">:</span> <span class="n">func</span><span class="p">{</span><span class="n">func</span><span class="p">},</span>
+      <span class="n">name</span><span class="p">{</span><span class="n">name</span><span class="p">}{}</span>
+  <span class="kt">void</span> <span class="k">operator</span><span class="p">()()</span> <span class="k">const</span><span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Entering &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">name</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">func</span><span class="p">();</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Exiting &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">name</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">Func</span><span class="o">&gt;</span>
+<span class="k">auto</span> <span class="n">make_logger2</span><span class="p">(</span><span class="n">Func</span> <span class="n">func</span><span class="p">,</span> 
+  <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">name</span><span class="p">){</span>
+  <span class="k">return</span> <span class="n">Logger2</span><span class="o">&lt;</span><span class="n">Func</span><span class="o">&gt;</span><span class="p">{</span> <span class="n">func</span><span class="p">,</span> <span class="n">name</span> <span class="p">};</span> 
+<span class="p">}</span>
+<span class="c1">//call
+</span><span class="c1"></span><span class="k">auto</span> <span class="n">call</span> <span class="o">=</span> <span class="n">make_logger2</span><span class="p">([](){</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;count&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;},</span> <span class="s">&#34;HelloFunc&#34;</span><span class="p">);</span>
+<span class="n">call</span><span class="p">();</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>还有一种是当有入参和返回值的需求时, 可变参数模板</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">R</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Args</span><span class="o">&gt;</span> 
+<span class="k">struct</span> <span class="n">Logger3</span><span class="o">&lt;</span><span class="n">R</span><span class="p">(</span><span class="n">Args</span><span class="p">...)</span><span class="o">&gt;</span>
+<span class="p">{</span>
+  <span class="n">Logger3</span><span class="p">(</span><span class="n">function</span><span class="o">&lt;</span><span class="n">R</span><span class="p">(</span><span class="n">Args</span><span class="p">...)</span><span class="o">&gt;</span> <span class="n">func</span><span class="p">,</span> <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">name</span><span class="p">)</span>
+    <span class="o">:</span> <span class="n">func</span><span class="p">{</span><span class="n">func</span><span class="p">},</span>
+      <span class="n">name</span><span class="p">{</span><span class="n">name</span><span class="p">}{}</span>
+  <span class="n">R</span> <span class="k">operator</span><span class="p">()</span> <span class="p">(</span><span class="n">Args</span> <span class="p">...</span><span class="n">args</span><span class="p">){</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Entering &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">name</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">R</span> <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">args</span><span class="p">...);</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Exiting &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">name</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">function</span><span class="o">&lt;</span><span class="n">R</span><span class="p">(</span><span class="n">Args</span> <span class="p">...)</span><span class="o">&gt;</span> <span class="n">func</span><span class="p">;</span>
+  <span class="n">string</span> <span class="n">name</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">R</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Args</span><span class="o">&gt;</span>
+<span class="k">auto</span> <span class="n">make_logger3</span><span class="p">(</span><span class="n">R</span> <span class="p">(</span><span class="o">*</span><span class="n">func</span><span class="p">)(</span><span class="n">Args</span><span class="p">...),</span> <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">name</span><span class="p">){</span>
+  <span class="k">return</span> <span class="n">Logger3</span><span class="o">&lt;</span><span class="n">R</span><span class="p">(</span><span class="n">Args</span><span class="p">...)</span><span class="o">&gt;</span><span class="p">(</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="n">R</span><span class="p">(</span><span class="n">Args</span><span class="p">...)</span><span class="o">&gt;</span><span class="p">(</span><span class="n">func</span><span class="p">),</span> 
+    <span class="n">name</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">double</span> <span class="n">add</span><span class="p">(</span><span class="kt">double</span> <span class="n">a</span><span class="p">,</span> <span class="kt">double</span> <span class="n">b</span><span class="p">){</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;+&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">b</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;=&#34;</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">//call
+</span><span class="c1"></span><span class="k">auto</span> <span class="n">logged_add</span> <span class="o">=</span> <span class="n">make_logger3</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="s">&#34;Add&#34;</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">result</span> <span class="o">=</span> <span class="n">logged_add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Sun.StriKE</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-04-04
+        <a href="https://github.com/sunstrikes/sunstrikes-blog.hugo/commit/5d8144ae45b57da7839198b29c5f52766f82276f" title="update">(5d8144a)</a>
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/brpc-internal/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">brpc internal</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/designpattern-part1/">
+            <span class="next-text nav-default">modern C&#43;&#43; DesignPattern-Part1</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  <span id="/post/designpattern-part2/" class="leancloud_visitors" data-flag-title="modern C&#43;&#43; DesignPattern-Part2">
+    <span class="post-meta-item-text">文章阅读量 </span>
+    <span class="leancloud-visitors-count">1000000</span>
+    <p></p>
+  </span>
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'gByHJOoMt4M4WCoHEznYmd8f-gzGzoHsz',
+        appKey: 'S95cz7uUC0z5lN06564jD0mf',
+        notify:  true ,
+        verify:  false ,
+        avatar:'mm',
+        placeholder: '说点什么吧...',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="sunstrikes@outlook.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/sunstrikes/" class="iconfont icon-github" title="github"></a>
+  <a href="https://sunstrikes.tech/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Sun.StriKE</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

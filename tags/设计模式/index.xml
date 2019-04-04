@@ -6,13 +6,22 @@
     <description>Recent content in 设计模式 on Sun.StriKE&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 03 Apr 2018 16:06:33 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 10 Apr 2018 19:08:49 +0800</lastBuildDate>
     
 	<atom:link href="https://sunstrikes.tech/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>modern C&#43;&#43; DesignPattern: Part1</title>
+      <title>modern C&#43;&#43; DesignPattern-Part2</title>
+      <link>https://sunstrikes.tech/post/designpattern-part2/</link>
+      <pubDate>Tue, 10 Apr 2018 19:08:49 +0800</pubDate>
+      
+      <guid>https://sunstrikes.tech/post/designpattern-part2/</guid>
+      <description>&lt;p&gt;Part2设计模式和结构化有较强的联系，分成两个part来解释，这篇主要包括桥接，适配器，装饰器这三种&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>modern C&#43;&#43; DesignPattern-Part1</title>
       <link>https://sunstrikes.tech/post/designpattern-part1/</link>
       <pubDate>Tue, 03 Apr 2018 16:06:33 +0800</pubDate>
       

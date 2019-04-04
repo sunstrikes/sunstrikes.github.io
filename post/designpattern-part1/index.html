@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>modern C&#43;&#43; DesignPattern: Part1 - Sun.StriKE&#39;s Blog</title>
+  <title>modern C&#43;&#43; DesignPattern-Part1 - Sun.StriKE&#39;s Blog</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="sunstrikes" /><meta name="description" content="设计模式复习" /><meta name="keywords" content="设计模式" />
+<meta name="author" content="Sun.StriKE" /><meta name="description" content="现代c&#43;&#43;改变了很多设计模式的实现方式，为了保持与时俱进，阅读了&amp;rdquo;Design Pattern in Modern C&#43;&#43;&amp;ldquo;这本书，会记录下来在阅读中的一些心得体会，Part1主要包括 工厂模式，建造者模式与单例模式的现代实现
+" /><meta name="keywords" content="设计模式" />
 
 
 
@@ -38,27 +39,27 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="modern C&#43;&#43; DesignPattern: Part1" />
-<meta property="og:description" content="设计模式复习" />
+<meta property="og:title" content="modern C&#43;&#43; DesignPattern-Part1" />
+<meta property="og:description" content="现代c&#43;&#43;改变了很多设计模式的实现方式，为了保持与时俱进，阅读了&rdquo;Design Pattern in Modern C&#43;&#43;&ldquo;这本书，会记录下来在阅读中的一些心得体会，Part1主要包括 工厂模式，建造者模式与单例模式的现代实现" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://sunstrikes.tech/post/designpattern-part1/" />
 <meta property="article:published_time" content="2018-04-03T16:06:33&#43;08:00"/>
-<meta property="article:modified_time" content="2018-04-03T16:06:33&#43;08:00"/>
+<meta property="article:modified_time" content="2019-04-04T17:16:52&#43;08:00"/>
 
-<meta itemprop="name" content="modern C&#43;&#43; DesignPattern: Part1">
-<meta itemprop="description" content="设计模式复习">
+<meta itemprop="name" content="modern C&#43;&#43; DesignPattern-Part1">
+<meta itemprop="description" content="现代c&#43;&#43;改变了很多设计模式的实现方式，为了保持与时俱进，阅读了&rdquo;Design Pattern in Modern C&#43;&#43;&ldquo;这本书，会记录下来在阅读中的一些心得体会，Part1主要包括 工厂模式，建造者模式与单例模式的现代实现">
 
 
 <meta itemprop="datePublished" content="2018-04-03T16:06:33&#43;08:00" />
-<meta itemprop="dateModified" content="2018-04-03T16:06:33&#43;08:00" />
+<meta itemprop="dateModified" content="2019-04-04T17:16:52&#43;08:00" />
 <meta itemprop="wordCount" content="660">
 
 
 
 <meta itemprop="keywords" content="设计模式,C&#43;&#43;," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="modern C&#43;&#43; DesignPattern: Part1"/>
-<meta name="twitter:description" content="设计模式复习"/>
+<meta name="twitter:title" content="modern C&#43;&#43; DesignPattern-Part1"/>
+<meta name="twitter:description" content="现代c&#43;&#43;改变了很多设计模式的实现方式，为了保持与时俱进，阅读了&rdquo;Design Pattern in Modern C&#43;&#43;&ldquo;这本书，会记录下来在阅读中的一些心得体会，Part1主要包括 工厂模式，建造者模式与单例模式的现代实现"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -125,7 +126,7 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">modern C&#43;&#43; DesignPattern: Part1</h1>
+      <h1 class="post-title">modern C&#43;&#43; DesignPattern-Part1</h1>
 
       <div class="post-meta">
         <span class="post-time"> 2018-04-03 </span>
@@ -134,7 +135,29 @@
       </div>
     </header>
 
-    
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#factory">Factory</a>
+<ul>
+<li><a href="#abstract-factory">Abstract Factory</a></li>
+<li><a href="#functional-factory">Functional Factory</a></li>
+</ul></li>
+<li><a href="#singleton">Singleton</a>
+<ul>
+<li><a href="#old-style-double-check-lock">Old style(double check lock)</a></li>
+<li><a href="#c-11">C++11</a></li>
+</ul></li>
+<li><a href="#builder">Builder</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
     <div class="post-content">
       <p>现代c++改变了很多设计模式的实现方式，为了保持与时俱进，阅读了&rdquo;Design Pattern in Modern C++&ldquo;这本书，会记录下来在阅读中的一些心得体会，Part1主要包括 工厂模式，建造者模式与单例模式的现代实现</p>
 
@@ -384,16 +407,30 @@
 </div>
     </div>
 
-    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Sun.StriKE</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-04-04
+        <a href="https://github.com/sunstrikes/sunstrikes-blog.hugo/commit/5d8144ae45b57da7839198b29c5f52766f82276f" title="update">(5d8144a)</a>
+    </span>
+  </p>
+  
+  
+</div>
 <footer class="post-footer">
       <div class="post-tags">
           <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
           <a href="/tags/c&#43;&#43;/">C&#43;&#43;</a>
           </div>
       <nav class="post-nav">
-        <a class="prev" href="/post/brpc-internal/">
+        <a class="prev" href="/post/designpattern-part2/">
             <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">brpc internal</span>
+            <span class="prev-text nav-default">modern C&#43;&#43; DesignPattern-Part2</span>
             <span class="prev-text nav-mobile">上一篇</span>
           </a>
         <a class="next" href="/post/tensorflow%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
@@ -406,7 +443,7 @@
   </article>
         </div>
         
-  <span id="/post/designpattern-part1/" class="leancloud_visitors" data-flag-title="modern C&#43;&#43; DesignPattern: Part1">
+  <span id="/post/designpattern-part1/" class="leancloud_visitors" data-flag-title="modern C&#43;&#43; DesignPattern-Part1">
     <span class="post-meta-item-text">文章阅读量 </span>
     <span class="leancloud-visitors-count">1000000</span>
     <p></p>
