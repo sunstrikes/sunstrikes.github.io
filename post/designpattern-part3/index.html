@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>modern C&#43;&#43; DesignPattern-Part3 - Sun.StriKE&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Sun.StriKE" /><meta name="description" content="结构式设计模式的最后两个，享元模式：实现对象共享，减少内存开销；代理模式，提供相同接口的代理
+" /><meta name="keywords" content="设计模式, C&#43;&#43;" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://sunstrikes.tech/post/designpattern-part3/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.996c8896.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="modern C&#43;&#43; DesignPattern-Part3" />
+<meta property="og:description" content="结构式设计模式的最后两个，享元模式：实现对象共享，减少内存开销；代理模式，提供相同接口的代理" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunstrikes.tech/post/designpattern-part3/" />
+<meta property="article:published_time" content="2018-04-12T19:08:49&#43;08:00"/>
+<meta property="article:modified_time" content="2018-04-12T19:08:49&#43;08:00"/>
+
+<meta itemprop="name" content="modern C&#43;&#43; DesignPattern-Part3">
+<meta itemprop="description" content="结构式设计模式的最后两个，享元模式：实现对象共享，减少内存开销；代理模式，提供相同接口的代理">
+
+
+<meta itemprop="datePublished" content="2018-04-12T19:08:49&#43;08:00" />
+<meta itemprop="dateModified" content="2018-04-12T19:08:49&#43;08:00" />
+<meta itemprop="wordCount" content="898">
+
+
+
+<meta itemprop="keywords" content="设计模式," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="modern C&#43;&#43; DesignPattern-Part3"/>
+<meta name="twitter:description" content="结构式设计模式的最后两个，享元模式：实现对象共享，减少内存开销；代理模式，提供相同接口的代理"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Sun.StriKE&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Sun.StriKE&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">modern C&#43;&#43; DesignPattern-Part3</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-04-12 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#flyweight">flyweight</a></li>
+<li><a href="#proxy">Proxy</a>
+<ul>
+<li><a href="#property-proxy">Property Proxy</a></li>
+<li><a href="#virtual-proxy">Virtual Proxy</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>结构式设计模式的最后两个，享元模式：实现对象共享，减少内存开销；代理模式，提供相同接口的代理</p>
+
+<h2 id="flyweight">flyweight</h2>
+
+<p>享元模式的主要目的是实现对象的共享，即共享池，当系统中对象多的时候可以减少内存的开销，通常与工厂模式一起使用。boost::flyweight使用：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="n">User2</span>
+<span class="p">{</span>
+  <span class="n">flyweight</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span><span class="p">;</span>  <span class="c1">//类似一个缓存
+</span><span class="c1"></span>
+  <span class="n">User2</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">first_name</span><span class="p">,</span> <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">last_name</span><span class="p">)</span>
+    <span class="o">:</span> <span class="n">first_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">),</span>
+      <span class="n">last_name</span><span class="p">(</span><span class="n">last_name</span><span class="p">)</span> <span class="p">{}</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">boost_flyweight</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">User2</span> <span class="n">user1</span><span class="p">{</span><span class="s">&#34;John&#34;</span><span class="p">,</span> <span class="s">&#34;Smith&#34;</span><span class="p">};</span>
+  <span class="n">User2</span> <span class="n">user2</span><span class="p">{</span><span class="s">&#34;Jane&#34;</span><span class="p">,</span> <span class="s">&#34;Smith&#34;</span><span class="p">};</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">user1</span><span class="p">.</span><span class="n">first_name</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">boolalpha</span>  <span class="c1">//std::boolalpha可以把bool变成true/false字符串
+</span><span class="c1"></span>       <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">user1</span><span class="p">.</span><span class="n">first_name</span><span class="p">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="o">&amp;</span><span class="n">user2</span><span class="p">.</span><span class="n">first_name</span><span class="p">.</span><span class="n">get</span><span class="p">())</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">boolalpha</span>
+       <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">user1</span><span class="p">.</span><span class="n">last_name</span><span class="p">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="o">&amp;</span><span class="n">user2</span><span class="p">.</span><span class="n">last_name</span><span class="p">.</span><span class="n">get</span><span class="p">())</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span><span class="err"> </span><span class="nc">FormattedText</span> <span class="p">{</span>  <span class="c1">//用来记录是否被复用的单元
+</span><span class="c1"></span>    <span class="n">string</span> <span class="n">plain_text</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="o">*</span><span class="n">caps</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">explicit</span> <span class="n">FormattedText</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">plainText</span><span class="p">)</span>
+            <span class="o">:</span> <span class="n">plain_text</span><span class="p">{</span><span class="n">plainText</span><span class="p">}</span> <span class="p">{</span>
+        <span class="n">caps</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">bool</span><span class="p">[</span><span class="n">plainText</span><span class="p">.</span><span class="n">length</span><span class="p">()];</span>
+        <span class="n">memset</span><span class="p">(</span><span class="n">caps</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">plain_text</span><span class="p">.</span><span class="n">length</span><span class="p">());</span>
+    <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">FormattedText</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">delete</span><span class="p">[]</span> <span class="n">caps</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">capitalize</span><span class="p">(</span><span class="kt">int</span> <span class="n">start</span><span class="p">,</span> <span class="kt">int</span> <span class="n">end</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">start</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">end</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">caps</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">friend</span> <span class="n">std</span><span class="o">::</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">,</span> <span class="k">const</span> <span class="n">FormattedText</span> <span class="o">&amp;</span><span class="n">obj</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">string</span> <span class="n">s</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">obj</span><span class="p">.</span><span class="n">plain_text</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="n">obj</span><span class="p">.</span><span class="n">plain_text</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="p">(</span><span class="n">obj</span><span class="p">.</span><span class="n">caps</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">?</span> <span class="n">toupper</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">:</span> <span class="n">c</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span><span class="err"> </span><span class="nc">BetterFormattedText</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">struct</span> <span class="n">TextRange</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">;</span>
+        <span class="kt">bool</span> <span class="n">capitalize</span><span class="p">,</span> <span class="n">bold</span><span class="p">,</span> <span class="n">italic</span><span class="p">;</span>
+
+        <span class="kt">bool</span> <span class="nf">covers</span><span class="p">(</span><span class="kt">int</span> <span class="n">position</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">position</span> <span class="o">&gt;=</span> <span class="n">start</span> <span class="o">&amp;&amp;</span> <span class="n">position</span> <span class="o">&lt;=</span> <span class="n">end</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="n">TextRange</span> <span class="o">&amp;</span><span class="n">get_range</span><span class="p">(</span><span class="kt">int</span> <span class="n">start</span><span class="p">,</span> <span class="kt">int</span> <span class="n">end</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//每当设置一个被复用的单元，push到vector里面，返回最后一个
+</span><span class="c1"></span>        <span class="n">formatting</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">TextRange</span><span class="p">{</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">});</span>
+        <span class="k">return</span> <span class="o">*</span><span class="n">formatting</span><span class="p">.</span><span class="n">rbegin</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">explicit</span> <span class="n">BetterFormattedText</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">plainText</span><span class="p">)</span>
+            <span class="o">:</span> <span class="n">plain_text</span><span class="p">{</span><span class="n">plainText</span><span class="p">}</span> <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="k">friend</span> <span class="n">std</span><span class="o">::</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">,</span> <span class="k">const</span> <span class="n">BetterFormattedText</span> <span class="o">&amp;</span><span class="n">obj</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">string</span> <span class="n">s</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">obj</span><span class="p">.</span><span class="n">plain_text</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">c</span> <span class="o">=</span> <span class="n">obj</span><span class="p">.</span><span class="n">plain_text</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span><span class="nl">rng</span> <span class="p">:</span> <span class="n">obj</span><span class="p">.</span><span class="n">formatting</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">rng</span><span class="p">.</span><span class="n">covers</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">rng</span><span class="p">.</span><span class="n">capitalize</span><span class="p">)</span>
+                    <span class="n">c</span> <span class="o">=</span> <span class="n">toupper</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="n">c</span><span class="p">;</span> <span class="c1">// fixed!
+</span><span class="c1"></span>        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">string</span> <span class="n">plain_text</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">TextRange</span><span class="o">&gt;</span> <span class="n">formatting</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="proxy">Proxy</h2>
+
+<p>代理模式最经典的是shared_ptr实现，增加了引用计数的同时保持了原有的普通指针接口</p>
+
+<h3 id="property-proxy">Property Proxy</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span> <span class="k">struct</span> <span class="n">Property</span> <span class="p">{</span>
+  <span class="n">T</span> <span class="n">value</span><span class="p">;</span>
+  <span class="n">Property</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span> <span class="n">initialValue</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">*</span><span class="k">this</span> <span class="o">=</span> <span class="n">initialValue</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">operator</span> <span class="n">T</span><span class="p">()</span> <span class="p">{</span>  <span class="c1">//getter
+</span><span class="c1"></span>    <span class="k">return</span> <span class="n">value</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">T</span> <span class="k">operator</span> <span class="o">=</span><span class="p">(</span><span class="n">T</span> <span class="n">newValue</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//setter
+</span><span class="c1"></span>    <span class="k">return</span> <span class="n">value</span> <span class="o">=</span> <span class="n">newValue</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+<span class="c1">//usage
+</span><span class="c1"></span><span class="k">struct</span> <span class="n">Creature</span>
+<span class="p">{</span>
+  <span class="n">Property</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">strength</span><span class="p">{</span> <span class="mi">10</span> <span class="p">};</span>
+  <span class="n">Property</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">agility</span><span class="p">{</span> <span class="mi">5</span> <span class="p">};</span>
+<span class="p">};</span>
+<span class="kt">void</span> <span class="nf">property_proxy</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">Creature</span> <span class="n">creature</span><span class="p">;</span>
+  <span class="n">creature</span><span class="p">.</span><span class="n">agility</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">creature</span><span class="p">.</span><span class="n">agility</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>主要目的是可以允许 <code>Property&lt;int&gt;</code>与int的随时转换。</p>
+
+<h3 id="virtual-proxy">Virtual Proxy</h3>
+
+<p>这种非常常见，使用时分两种，eager模式和lazy模式，区别就是lazy模式是在使用的时候才会初始化</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="n">Image</span><span class="p">{</span>
+  <span class="k">virtual</span> <span class="o">~</span><span class="n">Image</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+  <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">draw</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="k">struct</span> <span class="nl">Bitmap</span> <span class="p">:</span> <span class="n">Image</span><span class="p">{</span>
+  <span class="n">Bitmap</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">filename</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Loading image from &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">filename</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="kt">void</span> <span class="n">draw</span><span class="p">()</span> <span class="k">override</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Drawing image&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+<span class="k">struct</span> <span class="nl">LazyBitmap</span> <span class="p">:</span> <span class="n">Image</span> <span class="p">{</span>
+  <span class="n">LazyBitmap</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">filename</span><span class="p">)</span><span class="o">:</span> <span class="n">filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="p">{}</span>
+  <span class="o">~</span><span class="n">LazyBitmap</span><span class="p">()</span> <span class="p">{</span> <span class="k">delete</span> <span class="n">bmp</span><span class="p">;</span> <span class="p">}</span>
+  <span class="kt">void</span> <span class="n">draw</span><span class="p">()</span> <span class="k">override</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">bmp</span><span class="p">)</span>
+      <span class="n">bmp</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Bitmap</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+    <span class="n">bmp</span><span class="o">-&gt;</span><span class="n">draw</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="k">private</span><span class="o">:</span>
+  <span class="n">Bitmap</span><span class="o">*</span> <span class="n">bmp</span><span class="p">{</span><span class="k">nullptr</span><span class="p">};</span>
+  <span class="n">string</span> <span class="n">filename</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">draw_image</span><span class="p">(</span><span class="n">Image</span><span class="o">&amp;</span> <span class="n">img</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">img</span><span class="p">.</span><span class="n">draw</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">virtual_proxy</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">LazyBitmap</span> <span class="n">img</span><span class="p">{</span> <span class="s">&#34;pokemon.png&#34;</span> <span class="p">};</span>
+  <span class="n">draw_image</span><span class="p">(</span><span class="n">img</span><span class="p">);</span> <span class="c1">// loaded whether the bitmap is loaded or not
+</span><span class="c1"></span>  <span class="n">draw_image</span><span class="p">(</span><span class="n">img</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Sun.StriKE</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2018-04-12
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/brpc-internal/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">brpc internal</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/designpattern-part2/">
+            <span class="next-text nav-default">modern C&#43;&#43; DesignPattern-Part2</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  <span id="/post/designpattern-part3/" class="leancloud_visitors" data-flag-title="modern C&#43;&#43; DesignPattern-Part3">
+    <span class="post-meta-item-text">文章阅读量 </span>
+    <span class="leancloud-visitors-count">1000000</span>
+    <p></p>
+  </span>
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'gByHJOoMt4M4WCoHEznYmd8f-gzGzoHsz',
+        appKey: 'S95cz7uUC0z5lN06564jD0mf',
+        notify:  true ,
+        verify:  false ,
+        avatar:'mm',
+        placeholder: '说点什么吧...',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="sunstrikes@outlook.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/sunstrikes/" class="iconfont icon-github" title="github"></a>
+  <a href="https://sunstrikes.tech/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Sun.StriKE</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

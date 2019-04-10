@@ -52,7 +52,7 @@
 
 <meta itemprop="datePublished" content="2018-04-10T19:08:49&#43;08:00" />
 <meta itemprop="dateModified" content="2019-04-04T17:16:52&#43;08:00" />
-<meta itemprop="wordCount" content="1166">
+<meta itemprop="wordCount" content="1188">
 
 
 
@@ -486,9 +486,11 @@
 </span><span class="lnt">30
 </span><span class="lnt">31
 </span><span class="lnt">32
+</span><span class="lnt">33
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">R</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Args</span><span class="o">&gt;</span> 
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span><span class="o">&gt;</span> <span class="k">struct</span> <span class="n">Logger3</span><span class="p">;</span>  <span class="c1">//为啥这里需要先部分特化的声明？
+</span><span class="c1"></span><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">R</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Args</span><span class="o">&gt;</span> 
 <span class="k">struct</span> <span class="n">Logger3</span><span class="o">&lt;</span><span class="n">R</span><span class="p">(</span><span class="n">Args</span><span class="p">...)</span><span class="o">&gt;</span>
 <span class="p">{</span>
   <span class="n">Logger3</span><span class="p">(</span><span class="n">function</span><span class="o">&lt;</span><span class="n">R</span><span class="p">(</span><span class="n">Args</span><span class="p">...)</span><span class="o">&gt;</span> <span class="n">func</span><span class="p">,</span> <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">name</span><span class="p">)</span>
@@ -545,9 +547,9 @@
           <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
           </div>
       <nav class="post-nav">
-        <a class="prev" href="/post/brpc-internal/">
+        <a class="prev" href="/post/designpattern-part3/">
             <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">brpc internal</span>
+            <span class="prev-text nav-default">modern C&#43;&#43; DesignPattern-Part3</span>
             <span class="prev-text nav-mobile">上一篇</span>
           </a>
         <a class="next" href="/post/designpattern-part1/">
