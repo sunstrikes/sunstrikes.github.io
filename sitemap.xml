@@ -10,13 +10,6 @@
   </url>
   
   <url>
-    <loc>https://sunstrikes.tech/post/c&#43;&#43;-basic%E5%A4%8D%E4%B9%A0/</loc>
-    <lastmod>2019-03-27T16:54:39+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://sunstrikes.tech/post/pytorch-1-tensor-optim/</loc>
     <lastmod>2019-03-27T16:54:39+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -46,14 +39,14 @@
   
   <url>
     <loc>https://sunstrikes.tech/post/designpattern-part3/</loc>
-    <lastmod>2018-04-12T19:08:49+08:00</lastmod>
+    <lastmod>2019-04-10T20:50:38+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://sunstrikes.tech/post/designpattern-part2/</loc>
-    <lastmod>2019-04-04T17:16:52+08:00</lastmod>
+    <lastmod>2019-04-10T20:50:38+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -61,6 +54,13 @@
   <url>
     <loc>https://sunstrikes.tech/post/designpattern-part1/</loc>
     <lastmod>2019-04-04T17:16:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://sunstrikes.tech/post/c&#43;&#43;-basic%E5%A4%8D%E4%B9%A0/</loc>
+    <lastmod>2019-03-27T16:54:39+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -179,7 +179,7 @@
   
   <url>
     <loc>https://sunstrikes.tech/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
-    <lastmod>2018-04-12T19:08:49+08:00</lastmod>
+    <lastmod>2019-04-10T20:50:38+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
