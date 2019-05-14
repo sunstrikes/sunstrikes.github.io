@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>高性能C&#43;&#43;代码学习笔记 - Sun.StriKE&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Sun.StriKE" /><meta name="description" content="记录一下学习优秀代码的一些技巧
+" /><meta name="keywords" content="C&#43;&#43;" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://sunstrikes.tech/post/%E9%AB%98%E6%80%A7%E8%83%BDc&#43;&#43;%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.996c8896.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="高性能C&#43;&#43;代码学习笔记" />
+<meta property="og:description" content="记录一下学习优秀代码的一些技巧" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunstrikes.tech/post/%E9%AB%98%E6%80%A7%E8%83%BDc&#43;&#43;%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/" />
+<meta property="article:published_time" content="2019-04-30T20:52:44&#43;08:00"/>
+<meta property="article:modified_time" content="2019-04-30T20:52:44&#43;08:00"/>
+
+<meta itemprop="name" content="高性能C&#43;&#43;代码学习笔记">
+<meta itemprop="description" content="记录一下学习优秀代码的一些技巧">
+
+
+<meta itemprop="datePublished" content="2019-04-30T20:52:44&#43;08:00" />
+<meta itemprop="dateModified" content="2019-04-30T20:52:44&#43;08:00" />
+<meta itemprop="wordCount" content="514">
+
+
+
+<meta itemprop="keywords" content="高性能,C&#43;&#43;," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="高性能C&#43;&#43;代码学习笔记"/>
+<meta name="twitter:description" content="记录一下学习优秀代码的一些技巧"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Sun.StriKE&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Sun.StriKE&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">高性能C&#43;&#43;代码学习笔记</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-04-30 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    
+  </div>
+</div>
+    <div class="post-content">
+      <p>记录一下学习优秀代码的一些技巧</p>
+
+<ul>
+<li><code>string_view</code> c++17引入的特性，避免 const char* 与string相互赋值的时候string的深拷贝</li>
+<li><code>strcspn</code> 返回字符串开头连续不含字符串reject的字符数目 <code>strspn</code>返回字符串开头连续包含字符串accept的字符个数</li>
+<li>split精彩实现</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">F</span><span class="o">&gt;</span>
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">split</span><span class="p">(</span><span class="k">const</span> <span class="n">F</span><span class="o">&amp;</span> <span class="n">function</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">cstr</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">delim</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">do</span> <span class="p">{</span>
+<span class="k">auto</span> <span class="n">start</span> <span class="o">=</span> <span class="n">cstr</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="o">*</span><span class="n">cstr</span> <span class="o">!=</span> <span class="n">delim</span> <span class="o">&amp;&amp;</span> <span class="o">*</span><span class="n">cstr</span> <span class="o">!=</span> <span class="sc">&#39;\0&#39;</span><span class="p">)</span> <span class="o">++</span><span class="n">cstr</span><span class="p">;</span>
+<span class="n">function</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">cstr</span> <span class="o">-</span> <span class="n">start</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="o">*</span><span class="n">cstr</span><span class="o">++</span> <span class="o">!=</span> <span class="sc">&#39;\0&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">F</span><span class="o">&gt;</span>
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">split</span><span class="p">(</span><span class="k">const</span> <span class="n">F</span><span class="o">&amp;</span> <span class="n">function</span><span class="p">,</span> <span class="k">const</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">delim</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">)</span> <span class="p">{</span>
+<span class="n">split</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">str</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="n">delim</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// VS == std::vector&lt;std::string&gt;
+</span><span class="c1"></span><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">VS</span><span class="o">&gt;</span>
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">split</span><span class="p">(</span><span class="n">VS</span><span class="o">&amp;</span> <span class="n">tokens</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">cstr</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">delim</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">)</span> <span class="p">{</span>
+<span class="n">size_t</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">split</span><span class="p">([</span><span class="o">&amp;</span><span class="n">tokens</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">num</span><span class="p">]</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">begin</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">length</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">num</span> <span class="o">&lt;</span> <span class="n">tokens</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="p">{</span>
+<span class="n">tokens</span><span class="p">[</span><span class="n">num</span><span class="p">].</span><span class="n">assign</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">length</span><span class="p">);</span>  <span class="c1">//这里进行了tokens的重用，避免clear重新分配内存
+</span><span class="c1"></span><span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+<span class="n">tokens</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">length</span><span class="p">);</span> <span class="c1">//右值构造，一次赋值
+</span><span class="c1"></span><span class="p">}</span>
+<span class="o">++</span><span class="n">num</span><span class="p">;</span>
+<span class="p">},</span> <span class="n">cstr</span><span class="p">,</span> <span class="n">delim</span><span class="p">);</span>
+<span class="n">tokens</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">num</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li>使用likely(x)优化条件语句，当大部分情况会落入该分支的时候使用，可以避免大部分汇编语句的跳转，优化执行性能。<a href="https://blog.csdn.net/grublinux/article/details/37543489">解释</a></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#define unlikely(x) __buildin_expect((x), 0)
+</span><span class="cp">#define likely(x) __buildin_expect((x), 1)
+</span></code></pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li>enum可以用于模板。感觉很优雅</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">enum</span> <span class="k">class</span><span class="err"> </span><span class="nc">Encoding</span> <span class="p">{</span>
+<span class="n">GB18030</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+<span class="n">UTF8</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+<span class="n">GBK</span> <span class="o">=</span> <span class="mi">13</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="n">Encoding</span> <span class="n">T</span><span class="p">,</span> <span class="n">Encoding</span> <span class="n">F</span><span class="p">,</span> <span class="n">IconvOnError</span> <span class="n">O</span> <span class="o">=</span> <span class="n">IconvOnError</span><span class="o">::</span><span class="n">ABORT</span><span class="o">&gt;</span>
+<span class="kr">inline</span> <span class="n">int32_t</span> <span class="n">iconv_convert</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">output</span><span class="p">,</span> <span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span> <span class="n">input</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span>
+<span class="k">thread_local</span> <span class="n">IconvConverter</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">O</span><span class="o">&gt;</span> <span class="n">converter</span><span class="p">;</span> <span class="c1">//thread_local c++11关键词，线程生命周期的对象
+</span><span class="c1"></span><span class="k">return</span> <span class="n">converter</span><span class="p">.</span><span class="n">convert</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">input</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">//使用
+</span><span class="c1"></span><span class="n">iconv_convert</span><span class="o">&lt;</span><span class="n">Encoding</span><span class="o">::</span><span class="n">GB18030</span><span class="p">,</span> <span class="n">Encoding</span><span class="o">::</span><span class="n">UTF8</span><span class="o">&gt;</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">input</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li><code>std::decay</code>可以将T的右值，左值，引用等退化成T</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">U</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="nl">decay_equiv</span> <span class="p">:</span> 
+<span class="n">std</span><span class="o">::</span><span class="n">is_same</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">decay</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">,</span> <span class="n">U</span><span class="o">&gt;::</span><span class="n">type</span> 
+<span class="p">{};</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Sun.StriKE</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-04-30
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E9%AB%98%E6%80%A7%E8%83%BD/">高性能</a>
+          <a href="/tags/c&#43;&#43;/">C&#43;&#43;</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/designpattern-part4/">
+            <span class="next-text nav-default">DesignPattern Part4</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  <span id="/post/%E9%AB%98%E6%80%A7%E8%83%BDc&#43;&#43;%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/" class="leancloud_visitors" data-flag-title="高性能C&#43;&#43;代码学习笔记">
+    <span class="post-meta-item-text">文章阅读量 </span>
+    <span class="leancloud-visitors-count">1000000</span>
+    <p></p>
+  </span>
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'gByHJOoMt4M4WCoHEznYmd8f-gzGzoHsz',
+        appKey: 'S95cz7uUC0z5lN06564jD0mf',
+        notify:  true ,
+        verify:  false ,
+        avatar:'mm',
+        placeholder: '说点什么吧...',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="sunstrikes@outlook.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/sunstrikes/" class="iconfont icon-github" title="github"></a>
+  <a href="https://sunstrikes.tech/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Sun.StriKE</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
