@@ -17,15 +17,24 @@
       <pubDate>Thu, 28 Mar 2019 17:00:14 +0800</pubDate>
       
       <guid>https://sunstrikes.github.io/about/</guid>
-      <description>Software Engineer. Interested in machine learning/deep learning Company: Baidu.Inc</description>
+      <description> Software Engineer. Interested in machine learning/deep learning Company: Baidu.Inc  </description>
+    </item>
+    
+    <item>
+      <title>Pytorch源码阅读-ch3-Tensor&amp;Storage实现</title>
+      <link>https://sunstrikes.github.io/post/pytorch-3-tensorstorage%E5%AE%9E%E7%8E%B0/</link>
+      <pubDate>Thu, 04 Jul 2019 17:02:00 +0800</pubDate>
+      
+      <guid>https://sunstrikes.github.io/post/pytorch-3-tensorstorage%E5%AE%9E%E7%8E%B0/</guid>
+      <description>&lt;p&gt;去年一直立的flag，拖了许久。。终于下定决心要克服困难，真正去学习Pytorch的代码了。先从C部分看起，理解核心代码后再看上层&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Pytorch源码阅读-ch2-TH API</title>
-      <link>https://sunstrikes.github.io/post/pytorch-3-th/</link>
+      <link>https://sunstrikes.github.io/post/pytorch-2-th/</link>
       <pubDate>Wed, 03 Jul 2019 10:20:00 +0800</pubDate>
       
-      <guid>https://sunstrikes.github.io/post/pytorch-3-th/</guid>
+      <guid>https://sunstrikes.github.io/post/pytorch-2-th/</guid>
       <description>&lt;p&gt;去年一直立的flag，拖了许久。。终于下定决心要克服困难，真正去学习Pytorch的代码了。先从C部分看起，理解核心代码后再看上层&lt;/p&gt;</description>
     </item>
     

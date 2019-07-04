@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Pytorch源码阅读-ch2-TH API - Sun.StriKE&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Sun.StriKE" /><meta name="description" content="去年一直立的flag，拖了许久。。终于下定决心要克服困难，真正去学习Pytorch的代码了。先从C部分看起，理解核心代码后再看上层
+" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://sunstrikes.github.io/post/pytorch-2-th/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.368a6e90.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Pytorch源码阅读-ch2-TH API" />
+<meta property="og:description" content="去年一直立的flag，拖了许久。。终于下定决心要克服困难，真正去学习Pytorch的代码了。先从C部分看起，理解核心代码后再看上层" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunstrikes.github.io/post/pytorch-2-th/" />
+<meta property="article:published_time" content="2019-07-03T10:20:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-07-03T10:20:00&#43;08:00"/>
+
+<meta itemprop="name" content="Pytorch源码阅读-ch2-TH API">
+<meta itemprop="description" content="去年一直立的flag，拖了许久。。终于下定决心要克服困难，真正去学习Pytorch的代码了。先从C部分看起，理解核心代码后再看上层">
+
+
+<meta itemprop="datePublished" content="2019-07-03T10:20:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-07-03T10:20:00&#43;08:00" />
+<meta itemprop="wordCount" content="840">
+
+
+
+<meta itemprop="keywords" content="deep learning,pytorch," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Pytorch源码阅读-ch2-TH API"/>
+<meta name="twitter:description" content="去年一直立的flag，拖了许久。。终于下定决心要克服困难，真正去学习Pytorch的代码了。先从C部分看起，理解核心代码后再看上层"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Sun.StriKE&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Sun.StriKE&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Pytorch源码阅读-ch2-TH API</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-07-03 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"> 深度学习 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#c-泛型">C-泛型</a></li>
+<li><a href="#th-api">TH API</a>
+<ul>
+<li><a href="#thtensor">THTensor</a></li>
+<li><a href="#thstorage">THStorage</a></li>
+</ul></li>
+<li><a href="#util">Util</a>
+<ul>
+<li><a href="#intrusive-ptr-c10-util-intrusive-ptr">Intrusive_ptr(c10/util/intrusive_ptr)</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>去年一直立的flag，拖了许久。。终于下定决心要克服困难，真正去学习Pytorch的代码了。先从C部分看起，理解核心代码后再看上层</p>
+
+<h3 id="c-泛型">C-泛型</h3>
+
+<p>Pytorch使用了宏来实现c的泛型API，举个栗子</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#define CONCAT(A, B, C) A ## B ## C</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>例如这个宏可以用来产生<code>Double_Matrix_mul</code>这个变量名</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="n">Double_Matrix</span> <span class="nf">CONCAT</span><span class="p">(</span><span class="n">Double_</span><span class="p">,</span> <span class="n">Matrix_</span><span class="p">,</span> <span class="n">mul</span><span class="p">)(</span><span class="n">Double_Matrix</span> <span class="o">*</span><span class="n">A</span><span class="p">,</span> <span class="n">Double_Matrix</span> <span class="o">*</span><span class="n">B</span><span class="p">);</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>C的宏定义在出现<code>#</code>和<code>##</code>时会使用字符串替换，而不是展开，可以利用这个特性来产生函数名。同时需要一个中间宏来先展开宏名</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#define CONCAT_2_EXPAND(A, B) A ## B         </span><span class="c1">// NumVector
+</span><span class="c1"></span><span class="cp">#define CONCAT_2(A, B) CONCAT_2_EXPAND(A, B)     </span><span class="c1">//== #define CONCAT_2(Num,Vector) NumVector 
+</span><span class="c1">//#define CONCAT_2(A, B) A ## B  之所以不这样写，是因为这样写无法展开A，B，直接进行的字符串替换
+</span><span class="c1"></span><span class="cp">#define CONCAT_3_EXPAND(A, B, C) A ## B ## C     
+</span><span class="cp">#define CONCAT_3(A, B, C) CONCAT_3_EXPAND(A, B, C)
+</span><span class="cp"></span>
+<span class="cp">#define Vector_(NAME) CONCAT_3(Num, Vector_, NAME)
+</span><span class="cp">#define Vector CONCAT_2(Num, Vector)
+</span><span class="cp"></span>
+<span class="cp">#define num float
+</span><span class="cp">#define Num Float
+</span><span class="cp"></span><span class="k">struct</span> <span class="n">Vector</span>
+<span class="p">{</span>
+ <span class="n">num</span> <span class="o">*</span><span class="n">data</span><span class="p">;</span>
+ <span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="kt">void</span> <span class="nf">Vector_</span><span class="p">(</span><span class="n">add</span><span class="p">)(</span><span class="n">Vector</span> <span class="o">*</span><span class="n">C</span><span class="p">,</span> <span class="n">Vector</span> <span class="o">*</span><span class="n">A</span><span class="p">,</span> <span class="n">Vector</span> <span class="o">*</span><span class="n">B</span><span class="p">)</span> <span class="p">{</span>
+<span class="c1">//codes
+</span><span class="c1"></span><span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="th-api">TH API</h3>
+
+<p>张量这个数学对象被<strong>TH</strong>分解为<strong>THTensor</strong>和<strong>THStorage</strong>，<strong>THTensor</strong>提供一种查看<strong>THStorage</strong>的方法，<strong>THStorage</strong>负责管理张量的存储方式。所有的THTensor类型最终都会替换成<code>at::TensorImpl</code>，所有的THStorage类型也都会替换成<code>at::StorageImpl</code></p>
+
+<h4 id="thtensor">THTensor</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="c1">//Aten/src/TH/THTensor.h
+</span><span class="c1"></span><span class="cm">/* fill and zero*/</span>
+<span class="cp">#include</span> <span class="cpf">&lt;TH/generic/THTensorFill.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;TH/THGenerateAllTypes.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;TH/generic/THTensorFill.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;TH/THGenerateHalfType.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;TH/generic/THTensorFill.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;TH/THGenerateBoolType.h&gt;</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>刚开始看这个的时候一脸懵逼，为啥要反复include同一个文件。。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#ifndef TH_GENERIC_FILE
+</span><span class="cp">#error &#34;You must define TH_GENERIC_FILE before including THGenerateBoolType.h&#34;
+</span><span class="cp">#endif
+</span><span class="cp">#define scalar_t bool
+</span><span class="cp">#define TH_REAL_IS_BOOL
+</span><span class="cp">#line 1 TH_GENERIC_FILE     </span><span class="c1">//
+</span><span class="c1"></span><span class="cp">#include</span> <span class="cpf">TH_GENERIC_FILE</span><span class="cp">
+</span><span class="cp">#undef scalar_t
+</span><span class="cp">#undef TH_REAL_IS_BOOL
+</span><span class="cp">#ifndef THGenerateManyTypes
+</span><span class="cp">#undef TH_GENERIC_FILE
+</span><span class="cp">#endif</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>以<code>THGenerateBoolType.h</code>举例子，泛型的函数与宏都写在THTensorFill.h里面，include这个.h后，<code>TH_GENERIC_FILE</code>得到了定义，再#include这个文件的时候，就会把这个文件里的泛型函数与宏进行展开特化，从而得到bool相关的特化函数，非常巧妙。通过这种方式，使得THTensor.h中包含了所有的c API函数定义</p>
+
+<h4 id="thstorage">THStorage</h4>
+
+<p><code>Aten/src/TH/generic/THStorage.h</code></p>
+
+<p>接口实现与THVector类似，</p>
+
+<h3 id="util">Util</h3>
+
+<h4 id="intrusive-ptr-c10-util-intrusive-ptr">Intrusive_ptr(c10/util/intrusive_ptr)</h4>
+
+<p>侵入式指针，用于解决shared_ptr无法适应的场景，区别是对象自己管理引用计数。性能好于shared_ptr <a href="https://www.zhihu.com/question/25271180">知乎链接</a></p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Sun.StriKE</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-07-03
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/deep-learning/">deep learning</a>
+          <a href="/tags/pytorch/">pytorch</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/pytorch-3-tensorstorage%E5%AE%9E%E7%8E%B0/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Pytorch源码阅读-ch3-Tensor&amp;Storage实现</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E9%AB%98%E6%80%A7%E8%83%BDc&#43;&#43;%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/">
+            <span class="next-text nav-default">高性能C&#43;&#43;代码学习笔记</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+  <span id="/post/pytorch-2-th/" class="leancloud_visitors" data-flag-title="Pytorch源码阅读-ch2-TH API">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'gByHJOoMt4M4WCoHEznYmd8f-gzGzoHsz',
+        appKey: 'S95cz7uUC0z5lN06564jD0mf',
+        notify:  true , 
+        verify:  false , 
+        avatar:'mm', 
+        placeholder: '说点什么吧...',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="sunstrikes@outlook.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/sunstrikes/" class="iconfont icon-github" title="github"></a>
+  <a href="https://sunstrikes.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Sun.StriKE</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
