@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>C&#43;&#43; on Sun.StriKE&#39;s Blog</title>
-    <link>https://sunstrikes.tech/categories/c&#43;&#43;/</link>
+    <link>https://sunstrikes.github.io/categories/c&#43;&#43;/</link>
     <description>Recent content in C&#43;&#43; on Sun.StriKE&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Fri, 20 Apr 2018 14:08:10 +0800</lastBuildDate>
     
-	<atom:link href="https://sunstrikes.tech/categories/c++/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://sunstrikes.github.io/categories/c++/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>brpc internal</title>
-      <link>https://sunstrikes.tech/post/brpc-internal/</link>
+      <link>https://sunstrikes.github.io/post/brpc-internal/</link>
       <pubDate>Fri, 20 Apr 2018 14:08:10 +0800</pubDate>
       
-      <guid>https://sunstrikes.tech/post/brpc-internal/</guid>
+      <guid>https://sunstrikes.github.io/post/brpc-internal/</guid>
       <description>&lt;h3 id=&#34;brpc-内部实现&#34;&gt;brpc  内部实现&lt;/h3&gt;
 
 &lt;p&gt;brpc源码级分享&lt;/p&gt;</description>
@@ -24,10 +24,10 @@
     
     <item>
       <title>c&#43;&#43; basic复习</title>
-      <link>https://sunstrikes.tech/post/c&#43;&#43;-basic%E5%A4%8D%E4%B9%A0/</link>
+      <link>https://sunstrikes.github.io/post/c&#43;&#43;-basic%E5%A4%8D%E4%B9%A0/</link>
       <pubDate>Mon, 26 Mar 2018 14:32:12 +0800</pubDate>
       
-      <guid>https://sunstrikes.tech/post/c&#43;&#43;-basic%E5%A4%8D%E4%B9%A0/</guid>
+      <guid>https://sunstrikes.github.io/post/c&#43;&#43;-basic%E5%A4%8D%E4%B9%A0/</guid>
       <description>&lt;h3 id=&#34;基础知识&#34;&gt;基础知识&lt;/h3&gt;
 
 &lt;p&gt;长时间写python的后遗症，cpp的一些基础知识都忘得差不多了，需要强化一下记忆。&lt;/p&gt;</description>

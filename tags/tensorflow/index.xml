@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>tensorflow on Sun.StriKE&#39;s Blog</title>
-    <link>https://sunstrikes.tech/tags/tensorflow/</link>
+    <link>https://sunstrikes.github.io/tags/tensorflow/</link>
     <description>Recent content in tensorflow on Sun.StriKE&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Thu, 01 Mar 2018 18:51:12 +0800</lastBuildDate>
     
-	<atom:link href="https://sunstrikes.tech/tags/tensorflow/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://sunstrikes.github.io/tags/tensorflow/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>tensorflow基本使用</title>
-      <link>https://sunstrikes.tech/post/tensorflow%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</link>
+      <link>https://sunstrikes.github.io/post/tensorflow%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</link>
       <pubDate>Thu, 01 Mar 2018 18:51:12 +0800</pubDate>
       
-      <guid>https://sunstrikes.tech/post/tensorflow%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</guid>
+      <guid>https://sunstrikes.github.io/post/tensorflow%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</guid>
       <description>&lt;h4 id=&#34;使用tensorflow-extimator完成房价中位数预测&#34;&gt;使用tensorflow.extimator完成房价中位数预测&lt;/h4&gt;</description>
     </item>
     

@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>machine learning on Sun.StriKE&#39;s Blog</title>
-    <link>https://sunstrikes.tech/tags/machine-learning/</link>
+    <link>https://sunstrikes.github.io/tags/machine-learning/</link>
     <description>Recent content in machine learning on Sun.StriKE&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Thu, 01 Mar 2018 18:51:12 +0800</lastBuildDate>
     
-	<atom:link href="https://sunstrikes.tech/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://sunstrikes.github.io/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>tensorflow基本使用</title>
-      <link>https://sunstrikes.tech/post/tensorflow%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</link>
+      <link>https://sunstrikes.github.io/post/tensorflow%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</link>
       <pubDate>Thu, 01 Mar 2018 18:51:12 +0800</pubDate>
       
-      <guid>https://sunstrikes.tech/post/tensorflow%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</guid>
+      <guid>https://sunstrikes.github.io/post/tensorflow%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</guid>
       <description>&lt;h4 id=&#34;使用tensorflow-extimator完成房价中位数预测&#34;&gt;使用tensorflow.extimator完成房价中位数预测&lt;/h4&gt;</description>
     </item>
     
     <item>
       <title>pandas使用</title>
-      <link>https://sunstrikes.tech/post/pandas/</link>
+      <link>https://sunstrikes.github.io/post/pandas/</link>
       <pubDate>Mon, 22 Jan 2018 13:31:20 +0800</pubDate>
       
-      <guid>https://sunstrikes.tech/post/pandas/</guid>
+      <guid>https://sunstrikes.github.io/post/pandas/</guid>
       <description>&lt;h3 id=&#34;pandas&#34;&gt;Pandas&lt;/h3&gt;
 
 &lt;p&gt;一种列存数据分析 API。它是用于处理和分析输入数据的强大工具，很多机器学习框架都支持将 &lt;em&gt;pandas&lt;/em&gt; 数据结构作为输入。&lt;/p&gt;</description>
