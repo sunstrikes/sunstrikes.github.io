@@ -26,7 +26,7 @@
       <pubDate>Thu, 04 Jul 2019 17:02:00 +0800</pubDate>
       
       <guid>https://sunstrikes.github.io/post/pytorch-3-tensorstorage%E5%AE%9E%E7%8E%B0/</guid>
-      <description>&lt;p&gt;去年一直立的flag，拖了许久。。终于下定决心要克服困难，真正去学习Pytorch的代码了。先从C部分看起，理解核心代码后再看上层&lt;/p&gt;</description>
+      <description>&lt;p&gt;这章主要包括&lt;code&gt;TensorImpl&lt;/code&gt;与&lt;code&gt;StorageImpl&lt;/code&gt;的代码细节&lt;/p&gt;</description>
     </item>
     
     <item>
