@@ -6,10 +6,19 @@
     <description>Recent content in 深度学习 on Sun.StriKE&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 04 Jul 2019 17:02:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 08 Oct 2019 16:23:00 +0800</lastBuildDate>
     
 	<atom:link href="https://sunstrikes.github.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Pytorch源码阅读-ch4-Tensor并行运算</title>
+      <link>https://sunstrikes.github.io/post/pytorch-4-tensor%E5%B9%B6%E8%A1%8C%E8%BF%90%E7%AE%97/</link>
+      <pubDate>Tue, 08 Oct 2019 16:23:00 +0800</pubDate>
+      
+      <guid>https://sunstrikes.github.io/post/pytorch-4-tensor%E5%B9%B6%E8%A1%8C%E8%BF%90%E7%AE%97/</guid>
+      <description>&lt;p&gt;这章主要包括&lt;code&gt;THTensor&lt;/code&gt;是如何进行并行计算，进行性能优化的&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Pytorch源码阅读-ch3-Tensor&amp;Storage实现</title>

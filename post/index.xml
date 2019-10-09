@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Sun.StriKE&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 04 Jul 2019 17:02:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 08 Oct 2019 16:23:00 +0800</lastBuildDate>
     
 	<atom:link href="https://sunstrikes.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Pytorch源码阅读-ch4-Tensor并行运算</title>
+      <link>https://sunstrikes.github.io/post/pytorch-4-tensor%E5%B9%B6%E8%A1%8C%E8%BF%90%E7%AE%97/</link>
+      <pubDate>Tue, 08 Oct 2019 16:23:00 +0800</pubDate>
+      
+      <guid>https://sunstrikes.github.io/post/pytorch-4-tensor%E5%B9%B6%E8%A1%8C%E8%BF%90%E7%AE%97/</guid>
+      <description>&lt;p&gt;这章主要包括&lt;code&gt;THTensor&lt;/code&gt;是如何进行并行计算，进行性能优化的&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Pytorch源码阅读-ch3-Tensor&amp;Storage实现</title>
@@ -141,6 +150,20 @@
       <description>&lt;h3 id=&#34;pandas&#34;&gt;Pandas&lt;/h3&gt;
 
 &lt;p&gt;一种列存数据分析 API。它是用于处理和分析输入数据的强大工具，很多机器学习框架都支持将 &lt;em&gt;pandas&lt;/em&gt; 数据结构作为输入。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://sunstrikes.github.io/post/feed%E6%95%B4%E4%BD%93%E4%BB%8B%E7%BB%8D/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sunstrikes.github.io/post/feed%E6%95%B4%E4%BD%93%E4%BB%8B%E7%BB%8D/</guid>
+      <description> 优先时效性，全量落后 pq压缩
+cb：term召回
+近线召回：预测用户下次刷新，将没进入精算的结果加入缓存。用户发起请求之前就会进行预计算
+grg:多样性， buffer, context dnn 与模型相关的服务
+强id &amp;amp; 离散dnn，模型退化严重
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16  DemoProcessor processor; BthreadGraphExecutor executor; GraphBuilder builder; builder.executor(executor); { auto&amp;amp; v = builder.add_vertex(processor); v.named_depend(&amp;#34;a&amp;#34;).to(&amp;#34;A&amp;#34;); v.named_emit(&amp;#34;B&amp;#34;).to(&amp;#34;B&amp;#34;); v.named_emit(&amp;#34;C&amp;#34;).to(&amp;#34;C&amp;#34;); } builder.finish(); auto graph = builder.build(); auto a = graph-&amp;gt;find_data(&amp;#34;A&amp;#34;); auto b = graph-&amp;gt;find_data(&amp;#34;B&amp;#34;); auto c = graph-&amp;gt;find_data(&amp;#34;C&amp;#34;); }   </description>
     </item>
     
   </channel>
