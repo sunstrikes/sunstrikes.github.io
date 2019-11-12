@@ -30,9 +30,18 @@
     </item>
     
     <item>
+      <title>automl</title>
+      <link>https://sunstrikes.github.io/tags/automl/</link>
+      <pubDate>Tue, 05 Nov 2019 17:25:00 +0800</pubDate>
+      
+      <guid>https://sunstrikes.github.io/tags/automl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>deep learning</title>
       <link>https://sunstrikes.github.io/tags/deep-learning/</link>
-      <pubDate>Tue, 08 Oct 2019 16:23:00 +0800</pubDate>
+      <pubDate>Wed, 09 Oct 2019 17:37:00 +0800</pubDate>
       
       <guid>https://sunstrikes.github.io/tags/deep-learning/</guid>
       <description></description>
@@ -59,7 +68,7 @@
     <item>
       <title>pytorch</title>
       <link>https://sunstrikes.github.io/tags/pytorch/</link>
-      <pubDate>Tue, 08 Oct 2019 16:23:00 +0800</pubDate>
+      <pubDate>Wed, 09 Oct 2019 17:37:00 +0800</pubDate>
       
       <guid>https://sunstrikes.github.io/tags/pytorch/</guid>
       <description></description>
@@ -71,6 +80,15 @@
       <pubDate>Thu, 01 Mar 2018 18:51:12 +0800</pubDate>
       
       <guid>https://sunstrikes.github.io/tags/tensorflow/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>机器学习</title>
+      <link>https://sunstrikes.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
+      <pubDate>Tue, 05 Nov 2019 17:25:00 +0800</pubDate>
+      
+      <guid>https://sunstrikes.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
       <description></description>
     </item>
     

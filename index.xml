@@ -21,6 +21,42 @@
     </item>
     
     <item>
+      <title>auto-sklearn代码阅读 part3</title>
+      <link>https://sunstrikes.github.io/post/auto-sklearn-part3/</link>
+      <pubDate>Tue, 05 Nov 2019 17:25:00 +0800</pubDate>
+      
+      <guid>https://sunstrikes.github.io/post/auto-sklearn-part3/</guid>
+      <description>&lt;p&gt;auto-sklearn采用了贝叶斯优化作为超参数寻优算法。这是比较常见的黑盒优化算法，本章主要介绍这部分的原理&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>auto-sklearn代码阅读 part2</title>
+      <link>https://sunstrikes.github.io/post/auto-sklearn-part2/</link>
+      <pubDate>Tue, 05 Nov 2019 16:30:00 +0800</pubDate>
+      
+      <guid>https://sunstrikes.github.io/post/auto-sklearn-part2/</guid>
+      <description>&lt;p&gt;这一章简单介绍下auto-sklearn在特征预处理过程中使用的一些算法，其实很多都还没弄明白。后续需要进行更深入的学习，以及数据预处理的方法&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>auto-sklearn代码阅读 part1</title>
+      <link>https://sunstrikes.github.io/post/auto-sklearn-part1/</link>
+      <pubDate>Tue, 22 Oct 2019 19:32:00 +0800</pubDate>
+      
+      <guid>https://sunstrikes.github.io/post/auto-sklearn-part1/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;自动机器学习&lt;/strong&gt;（&lt;strong&gt;AutoML&lt;/strong&gt;）是将机器学习应用于现实问题的端到端流程自动化的过程。工作中刚好有用到auto-sklearn相关技术，记录一下代码阅读笔记。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Pytorch源码阅读-ch5-THC part1</title>
+      <link>https://sunstrikes.github.io/post/pytorch-5-thc-part1/</link>
+      <pubDate>Wed, 09 Oct 2019 17:37:00 +0800</pubDate>
+      
+      <guid>https://sunstrikes.github.io/post/pytorch-5-thc-part1/</guid>
+      <description>&lt;p&gt;这章开始是Pytorch CUDA的部分&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Pytorch源码阅读-ch4-Tensor并行运算</title>
       <link>https://sunstrikes.github.io/post/pytorch-4-tensor%E5%B9%B6%E8%A1%8C%E8%BF%90%E7%AE%97/</link>
       <pubDate>Tue, 08 Oct 2019 16:23:00 +0800</pubDate>
@@ -159,6 +195,21 @@
       <description>&lt;h3 id=&#34;pandas&#34;&gt;Pandas&lt;/h3&gt;
 
 &lt;p&gt;一种列存数据分析 API。它是用于处理和分析输入数据的强大工具，很多机器学习框架都支持将 &lt;em&gt;pandas&lt;/em&gt; 数据结构作为输入。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://sunstrikes.github.io/post/cuda/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sunstrikes.github.io/post/cuda/</guid>
+      <description>Gpu 适合大规模并行计算场景 cpu更适合串行任务优化&amp;amp;线程数量少 gpu结构：global memory (显存) + 流处理器（里面有很多 cuda core），通过PCIE与cpu连接  sm(流处理器) 存储 globalmem-&amp;gt;L2-&amp;gt;L1/SMEM/C -&amp;gt; 寄存器 gpu之间可以通过nv link(40GB/s)，避免pcie慢速  cuda编程：主函数: host(cpu)-&amp;gt;kernel(gpu)-&amp;gt;host(单线程)  Nvcc编译，__global____标识gpu程序入口 显存分配cudaMalloc cudaMemset cudaFree 数据从cpu端-&amp;gt;显存，__host__ cudaMemcpy() 异步拷贝：cudaMemoryAsync 现有技术： 从ssd直接读入显存，从另一个服务器的gpu通过网卡直接读入本机gpu，不需要经过cpu处理 运行模型：1.Grid，包含很多block，2.block(单个流处理器中)包含很多thread &amp;lt;&amp;lt;&amp;lt;Grid, Block&amp;gt;&amp;gt;&amp;gt; 在main函数中指定grid，block个数(并发使用，如果sm间没有数据交互，优先使用SM(也就是Grid尽量大)) thread_idx = blockidx.x * blockdim.x + threadidx.x 推荐尽量多的使用线程，而不是根据sm数量分配线程   cuda优化 cudnn：深度学习相关库
+cublas：矩阵相乘
+cuSPARSE: 稀疏矩阵计算
+NCCL: 自动化处理多GPU数据传输
+TensorRT: 重要
+TensorRT  Fuse network layers(FP16 与 INT8) 1.5-4倍加速比 Onnx/tensor模型文件-&amp;gt;build(自动调优)-&amp;gt;deploy  优化手段：  vec相乘-&amp;gt;矩阵相乘
+ 使用评估工具，内存带宽瓶颈 or 计算瓶颈</description>
     </item>
     
     <item>

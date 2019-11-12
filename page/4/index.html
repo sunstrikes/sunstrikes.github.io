@@ -45,6 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://sunstrikes.github.io/" />
 
+<meta property="og:updated_time" content="2018-04-03T16:06:33&#43;08:00"/>
 
 <meta itemprop="name" content="Sun.StriKE&#39;s Blog">
 <meta itemprop="description" content="stay humble">
@@ -118,7 +119,93 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/feed%E6%95%B4%E4%BD%93%E4%BB%8B%E7%BB%8D/"></a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/designpattern-part1/">modern C&#43;&#43; DesignPattern-Part1</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2018-04-03 </span>
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>现代c++改变了很多设计模式的实现方式，为了保持与时俱进，阅读了&rdquo;Design Pattern in Modern C++&ldquo;这本书，会记录下来在阅读中的一些心得体会，Part1主要包括 工厂模式，建造者模式与单例模式的现代实现</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/designpattern-part1/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/c&#43;&#43;-basic%E5%A4%8D%E4%B9%A0/">c&#43;&#43; basic复习</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2018-03-26 </span>
+      <div class="post-category">
+          <a href="/categories/c&#43;&#43;/"> C&#43;&#43; </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h3 id="基础知识">基础知识</h3>
+
+<p>长时间写python的后遗症，cpp的一些基础知识都忘得差不多了，需要强化一下记忆。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/c&#43;&#43;-basic%E5%A4%8D%E4%B9%A0/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/tensorflow%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">tensorflow基本使用</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2018-03-01 </span>
+      <div class="post-category">
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h4 id="使用tensorflow-extimator完成房价中位数预测">使用tensorflow.extimator完成房价中位数预测</h4>
+    </div>
+    <div class="read-more">
+      <a href="/post/tensorflow%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/pandas/">pandas使用</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2018-01-22 </span>
+      <div class="post-category">
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h3 id="pandas">Pandas</h3>
+
+<p>一种列存数据分析 API。它是用于处理和分析输入数据的强大工具，很多机器学习框架都支持将 <em>pandas</em> 数据结构作为输入。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/pandas/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/cuda/"></a></h1>
     <div class="post-meta">
       <span class="post-time"> 0001-01-01 </span>
       
@@ -127,15 +214,16 @@
   
   <div class="post-content">
     <div class="post-summary">
-       优先时效性，全量落后 pq压缩
-cb：term召回
-近线召回：预测用户下次刷新，将没进入精算的结果加入缓存。用户发起请求之前就会进行预计算
-grg:多样性， buffer, context dnn 与模型相关的服务
-强id &amp; 离散dnn，模型退化严重
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16  DemoProcessor processor; BthreadGraphExecutor executor; GraphBuilder builder; builder.executor(executor); { auto&amp; v = builder.add_vertex(processor); v.named_depend(&#34;a&#34;).to(&#34;A&#34;); v.named_emit(&#34;B&#34;).to(&#34;B&#34;); v.named_emit(&#34;C&#34;).to(&#34;C&#34;); } builder.finish(); auto graph = builder.build(); auto a = graph-&gt;find_data(&#34;A&#34;); auto b = graph-&gt;find_data(&#34;B&#34;); auto c = graph-&gt;find_data(&#34;C&#34;); }   
+      Gpu 适合大规模并行计算场景 cpu更适合串行任务优化&amp;线程数量少 gpu结构：global memory (显存) + 流处理器（里面有很多 cuda core），通过PCIE与cpu连接  sm(流处理器) 存储 globalmem-&gt;L2-&gt;L1/SMEM/C -&gt; 寄存器 gpu之间可以通过nv link(40GB/s)，避免pcie慢速  cuda编程：主函数: host(cpu)-&gt;kernel(gpu)-&gt;host(单线程)  Nvcc编译，__global____标识gpu程序入口 显存分配cudaMalloc cudaMemset cudaFree 数据从cpu端-&gt;显存，__host__ cudaMemcpy() 异步拷贝：cudaMemoryAsync 现有技术： 从ssd直接读入显存，从另一个服务器的gpu通过网卡直接读入本机gpu，不需要经过cpu处理 运行模型：1.Grid，包含很多block，2.block(单个流处理器中)包含很多thread &lt;&lt;&lt;Grid, Block&gt;&gt;&gt; 在main函数中指定grid，block个数(并发使用，如果sm间没有数据交互，优先使用SM(也就是Grid尽量大)) thread_idx = blockidx.x * blockdim.x + threadidx.x 推荐尽量多的使用线程，而不是根据sm数量分配线程   cuda优化 cudnn：深度学习相关库
+cublas：矩阵相乘
+cuSPARSE: 稀疏矩阵计算
+NCCL: 自动化处理多GPU数据传输
+TensorRT: 重要
+TensorRT  Fuse network layers(FP16 与 INT8) 1.5-4倍加速比 Onnx/tensor模型文件-&gt;build(自动调优)-&gt;deploy  优化手段：  vec相乘-&gt;矩阵相乘
+ 使用评估工具，内存带宽瓶颈 or 计算瓶颈
     </div>
     <div class="read-more">
-      <a href="/post/feed%E6%95%B4%E4%BD%93%E4%BB%8B%E7%BB%8D/" class="read-more-link">阅读更多</a>
+      <a href="/post/cuda/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>
@@ -147,7 +235,10 @@ grg:多样性， buffer, context dnn 与模型相关的服务
         <i class="iconfont icon-left"></i>
         <span class="prev-text">上一页</span>
       </a>
-    
+    <a class="next" href="/page/5/">
+        <span class="next-text">下一页</span>
+        <i class="iconfont icon-right"></i>
+      </a>
   </nav>
         </div>
         

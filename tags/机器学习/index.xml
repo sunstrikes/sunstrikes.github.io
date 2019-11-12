@@ -2,13 +2,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>机器学习 on Sun.StriKE&#39;s Blog</title>
-    <link>https://sunstrikes.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
+    <link>https://sunstrikes.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
     <description>Recent content in 机器学习 on Sun.StriKE&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Tue, 05 Nov 2019 17:25:00 +0800</lastBuildDate>
     
-	<atom:link href="https://sunstrikes.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://sunstrikes.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -36,35 +36,6 @@
       
       <guid>https://sunstrikes.github.io/post/auto-sklearn-part1/</guid>
       <description>&lt;p&gt;&lt;strong&gt;自动机器学习&lt;/strong&gt;（&lt;strong&gt;AutoML&lt;/strong&gt;）是将机器学习应用于现实问题的端到端流程自动化的过程。工作中刚好有用到auto-sklearn相关技术，记录一下代码阅读笔记。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>LSTM推导</title>
-      <link>https://sunstrikes.github.io/post/lstm%E6%8E%A8%E5%AF%BC/</link>
-      <pubDate>Wed, 16 May 2018 20:00:38 +0800</pubDate>
-      
-      <guid>https://sunstrikes.github.io/post/lstm%E6%8E%A8%E5%AF%BC/</guid>
-      <description>&lt;p&gt;LSTM的前向与反向推导&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>tensorflow基本使用</title>
-      <link>https://sunstrikes.github.io/post/tensorflow%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</link>
-      <pubDate>Thu, 01 Mar 2018 18:51:12 +0800</pubDate>
-      
-      <guid>https://sunstrikes.github.io/post/tensorflow%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</guid>
-      <description>&lt;h4 id=&#34;使用tensorflow-extimator完成房价中位数预测&#34;&gt;使用tensorflow.extimator完成房价中位数预测&lt;/h4&gt;</description>
-    </item>
-    
-    <item>
-      <title>pandas使用</title>
-      <link>https://sunstrikes.github.io/post/pandas/</link>
-      <pubDate>Mon, 22 Jan 2018 13:31:20 +0800</pubDate>
-      
-      <guid>https://sunstrikes.github.io/post/pandas/</guid>
-      <description>&lt;h3 id=&#34;pandas&#34;&gt;Pandas&lt;/h3&gt;
-
-&lt;p&gt;一种列存数据分析 API。它是用于处理和分析输入数据的强大工具，很多机器学习框架都支持将 &lt;em&gt;pandas&lt;/em&gt; 数据结构作为输入。&lt;/p&gt;</description>
     </item>
     
   </channel>

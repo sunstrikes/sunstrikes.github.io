@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>auto-sklearn代码阅读 part2 - Sun.StriKE&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Sun.StriKE" /><meta name="description" content="这一章简单介绍下auto-sklearn在特征预处理过程中使用的一些算法，其实很多都还没弄明白。后续需要进行更深入的学习，以及数据预处理的方法
+" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://sunstrikes.github.io/post/auto-sklearn-part2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.368a6e90.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="auto-sklearn代码阅读 part2" />
+<meta property="og:description" content="这一章简单介绍下auto-sklearn在特征预处理过程中使用的一些算法，其实很多都还没弄明白。后续需要进行更深入的学习，以及数据预处理的方法" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunstrikes.github.io/post/auto-sklearn-part2/" />
+<meta property="article:published_time" content="2019-11-05T16:30:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-11-05T16:30:00&#43;08:00"/>
+
+<meta itemprop="name" content="auto-sklearn代码阅读 part2">
+<meta itemprop="description" content="这一章简单介绍下auto-sklearn在特征预处理过程中使用的一些算法，其实很多都还没弄明白。后续需要进行更深入的学习，以及数据预处理的方法">
+
+
+<meta itemprop="datePublished" content="2019-11-05T16:30:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-11-05T16:30:00&#43;08:00" />
+<meta itemprop="wordCount" content="1239">
+
+
+
+<meta itemprop="keywords" content="automl,机器学习," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="auto-sklearn代码阅读 part2"/>
+<meta name="twitter:description" content="这一章简单介绍下auto-sklearn在特征预处理过程中使用的一些算法，其实很多都还没弄明白。后续需要进行更深入的学习，以及数据预处理的方法"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Sun.StriKE&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Sun.StriKE&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">auto-sklearn代码阅读 part2</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-11-05 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#特征预处理">特征预处理</a></li>
+<li><a href="#数据预处理">数据预处理</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>这一章简单介绍下auto-sklearn在特征预处理过程中使用的一些算法，其实很多都还没弄明白。后续需要进行更深入的学习，以及数据预处理的方法</p>
+
+<h3 id="特征预处理">特征预处理</h3>
+
+<ol>
+<li><p>densifier 将稀疏表示的矩阵转换成普通矩阵 Array形式存储</p></li>
+
+<li><p>truncatedSVD, 常用降维方法，将特征降到固定维数，输出维数 作为 超参数</p></li>
+
+<li><p>select_rates 只用于分类，允许使用可配置方法来进行单变量特征选择。它允许超参数搜索评估器来选择最好的单变量特征</p>
+
+<ol>
+<li>chi2: 卡方统计量检验类别变量之间的确定关联性，如果输入是稀疏矩阵，只使用chi2</li>
+<li>f_classif 基于F-检验的方法估计两个随机变量间的线性相关度</li>
+<li>score_func, mode, alpha都作为超参数</li>
+</ol></li>
+
+<li><p>select_percentile 移除除了指定的最高得分百分比之外的所有特征 以分类为例：除了chi2, f_classif 还有 mutual_info的方法 percentile 作为超参数</p></li>
+
+<li><p>polynomial 多项式特征构造，如果有a，b两个特征，那么它的2次多项式为（1,a,b,a^2,ab, b^2）</p></li>
+
+<li><ol>
+<li>超参：degree(2阶 or 3阶)  interaction(是否进行自身相乘，如 a^2, b^2) , include_bias</li>
+</ol></li>
+
+<li><p>PCA 降维方法， 超参: keep_variance(PCA算法中所要保留的主成分个数n), whiten(白化，使得每个特征具有相同的方差)</p></li>
+
+<li><p>FastICA 用于独立特征分离的算法。超参：n_conponents, whiten, altorithm  <strong>TODO <a href="https://www.jianshu.com/p/de396e8cce15">FastICA算法资料</a></strong></p></li>
+
+<li><p>KernelPCA 使用 kPCA 将维度降至低维维，然后应用 Logistic 回归进行分类。然后使用 Grid SearchCV 为 kPCA 找到最佳的核和 gamma 值，以便在最后获得最佳的分类准确性 <a href="https://www.bookstack.cn/read/hands_on_Ml_with_Sklearn_and_TF/spilt.4.docs-8.降维.md">核PCA资料</a></p>
+
+<ol>
+<li>超参：kernel(核的类型，如RBF, cosine, sigmoid等)， gamma(核系数， RBF, poly，sigmoid专有), degree(2-5, 默认是3), coef0(独立项，poly, sigmoid专有), n_components</li>
+</ol></li>
+
+<li><p>random_trees_embedding, 利用一个随机森林，进行无监督的特征转换，把低维的非线性特征，转化为高维的稀疏特征 TODO: <a href="https://zhuanlan.zhihu.com/p/26683576">RF embedding资料</a></p>
+
+<ol>
+<li>超参：比较多，n_estimators, max_depth, min_samples_split, min_samples_leaf, min_weight_fraction_leaf, max_leaf_nodes, bootstrap等</li>
+</ol></li>
+
+<li><p>expt_trees</p>
+
+<ol>
+<li>max_samples和max_features控制子集的大小，bootstrap和bootstrap_features控制数据样本和属性是否替换。Oob_score=True可使得估计时采用已有的数据划分样本</li>
+</ol></li>
+
+<li><p>feature_agglomeration 把那些效果或行为相似的特征进行聚类，达到降维的目的</p></li>
+
+<li><p>kitchen_sinks 为径向基函数核构造一个近似映射, 与nystroem有关</p></li>
+
+<li><p>nystroem_sample 它是通过采样 kernel 已经评估好的数据。默认情况下使用 <code>rbf</code> kernel，但它可以使用任何内核函数和预计算内核矩阵. 使用的样本数量 - 计算的特征维数 - 由参数 <code>n_components</code> 给出</p></li>
+</ol>
+
+<h3 id="数据预处理">数据预处理</h3>
+
+<ol>
+<li>variance_threshold 过滤方差较低的特征</li>
+<li>Rescaling, 特征的缩放变换
+
+<ol>
+<li>包括 abs, minmax, normalize，standarize等非常常见的处理</li>
+<li>RobustScaler：适用于有离群点数据，它有对数据中心化和数据的缩放鲁棒性更强的参数，根据分位数范围（默认为IQR： IQR是第1四分位数和第3个四分位数之间的范围。）删除中位数并缩放数据</li>
+<li>QuantileTransformer：提供了一个基于分位数函数的无参数转换，将数据映射到了零到一的均匀分布上</li>
+</ol></li>
+<li>OneHotEncoding</li>
+<li>Imputation 缺失值插补，可以用提供的常数值，也可以使用缺失值所在的行/列中的统计数据进行补充</li>
+<li>Balancing</li>
+</ol>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Sun.StriKE</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-11-05
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/automl/">automl</a>
+          <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/auto-sklearn-part3/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">auto-sklearn代码阅读 part3</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/auto-sklearn-part1/">
+            <span class="next-text nav-default">auto-sklearn代码阅读 part1</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+  <span id="/post/auto-sklearn-part2/" class="leancloud_visitors" data-flag-title="auto-sklearn代码阅读 part2">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'gByHJOoMt4M4WCoHEznYmd8f-gzGzoHsz',
+        appKey: 'S95cz7uUC0z5lN06564jD0mf',
+        notify:  true , 
+        verify:  false , 
+        avatar:'mm', 
+        placeholder: '说点什么吧...',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="sunstrikes@outlook.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/sunstrikes/" class="iconfont icon-github" title="github"></a>
+  <a href="https://sunstrikes.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Sun.StriKE</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

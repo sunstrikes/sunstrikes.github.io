@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>auto-sklearn代码阅读 part1 - Sun.StriKE&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Sun.StriKE" /><meta name="description" content="自动机器学习（AutoML）是将机器学习应用于现实问题的端到端流程自动化的过程。工作中刚好有用到auto-sklearn相关技术，记录一下代码阅读笔记。
+" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://sunstrikes.github.io/post/auto-sklearn-part1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.368a6e90.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="auto-sklearn代码阅读 part1" />
+<meta property="og:description" content="自动机器学习（AutoML）是将机器学习应用于现实问题的端到端流程自动化的过程。工作中刚好有用到auto-sklearn相关技术，记录一下代码阅读笔记。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunstrikes.github.io/post/auto-sklearn-part1/" />
+<meta property="article:published_time" content="2019-10-22T19:32:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-10-22T19:32:00&#43;08:00"/>
+
+<meta itemprop="name" content="auto-sklearn代码阅读 part1">
+<meta itemprop="description" content="自动机器学习（AutoML）是将机器学习应用于现实问题的端到端流程自动化的过程。工作中刚好有用到auto-sklearn相关技术，记录一下代码阅读笔记。">
+
+
+<meta itemprop="datePublished" content="2019-10-22T19:32:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-10-22T19:32:00&#43;08:00" />
+<meta itemprop="wordCount" content="684">
+
+
+
+<meta itemprop="keywords" content="automl,机器学习," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="auto-sklearn代码阅读 part1"/>
+<meta name="twitter:description" content="自动机器学习（AutoML）是将机器学习应用于现实问题的端到端流程自动化的过程。工作中刚好有用到auto-sklearn相关技术，记录一下代码阅读笔记。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Sun.StriKE&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Sun.StriKE&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">auto-sklearn代码阅读 part1</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-10-22 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#auto-sklearn-简要介绍">auto-sklearn 简要介绍</a></li>
+<li><a href="#estimator">Estimator</a>
+<ul>
+<li><a href="#baseautoml">BaseAutoML</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><strong>自动机器学习</strong>（<strong>AutoML</strong>）是将机器学习应用于现实问题的端到端流程自动化的过程。工作中刚好有用到auto-sklearn相关技术，记录一下代码阅读笔记。</p>
+
+<h3 id="auto-sklearn-简要介绍">auto-sklearn 简要介绍</h3>
+
+<p>如下是一个最简单的例子，fit中包括了数据预处理，特征变换，模型选择，超参调优等流程。用户不用关心中间的实现过程</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">autosklearn.classification</span>
+<span class="kn">import</span> <span class="nn">sklearn.model_selection</span>
+<span class="kn">import</span> <span class="nn">sklearn.datasets</span>
+<span class="kn">import</span> <span class="nn">sklearn.metrics</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">load_digits</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> \
+        <span class="n">sklearn</span><span class="o">.</span><span class="n">model_selection</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">automl</span> <span class="o">=</span> <span class="n">autosklearn</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">AutoSklearnClassifier</span><span class="p">()</span>
+<span class="n">automl</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_hat</span> <span class="o">=</span> <span class="n">automl</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&#34;Accuracy score&#34;</span><span class="p">,</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">))</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><img src="https://s2.ax1x.com/2019/11/08/MVn3l9.png" alt="MVn3l9.png" /></p>
+
+<h3 id="estimator">Estimator</h3>
+
+<p>这是最主要的基类，在此基础上衍生了<code>AutoSklearnClassifier</code>和<code>AutoSklearnRegressor</code>，根据具体场景选择分类还是回归</p>
+
+<p>有几个比较重要的入参：</p>
+
+<ol>
+<li>n_jobs 指定 并发的job个数</li>
+</ol>
+
+<p>主体流程：</p>
+
+<ol>
+<li>判断并发job个数，默认为单任务运行</li>
+<li>build_automl初始化automl类，每个进程初始化一个</li>
+<li>在本进程运行一个，在n-1个其他进程上运行其他的任务</li>
+</ol>
+
+<h4 id="baseautoml">BaseAutoML</h4>
+
+<p>作为classifier和regressor的共同基类，子类在此基础上重写fit函数。</p>
+
+<p>classifier.fit： 根据y向量判断问题类型，如果是多label分类问题，衡量指标为f1_macro，否则是accuracy</p>
+
+<p>Regressor.fit: 衡量指标(metrics) r2</p>
+
+<p>AutoMl.fit主要逻辑：</p>
+
+<ol>
+<li>入参检查，其中resampling_strategy默认为 holdout-iterative-fit</li>
+<li>do_dummy_prediction 构造一个预测函数，用来debug</li>
+<li>Create_search_space(重点) 根据配置(所包含的estimator, preprocessor)创建一个搜索空间，以classifier为例，这里返回了生成的 SimpleClassificationPipeline，这个类是实现分类task的整个pipeline</li>
+</ol>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Sun.StriKE</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-10-22
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/automl/">automl</a>
+          <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/auto-sklearn-part2/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">auto-sklearn代码阅读 part2</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/pytorch-5-thc-part1/">
+            <span class="next-text nav-default">Pytorch源码阅读-ch5-THC part1</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+  <span id="/post/auto-sklearn-part1/" class="leancloud_visitors" data-flag-title="auto-sklearn代码阅读 part1">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'gByHJOoMt4M4WCoHEznYmd8f-gzGzoHsz',
+        appKey: 'S95cz7uUC0z5lN06564jD0mf',
+        notify:  true , 
+        verify:  false , 
+        avatar:'mm', 
+        placeholder: '说点什么吧...',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="sunstrikes@outlook.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/sunstrikes/" class="iconfont icon-github" title="github"></a>
+  <a href="https://sunstrikes.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Sun.StriKE</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

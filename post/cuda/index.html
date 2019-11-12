@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title> - Sun.StriKE&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Sun.StriKE" /><meta name="description" content="Gpu 适合大规模并行计算场景 cpu更适合串行任务优化&amp;amp;线程数量少 gpu结构：global memory (显存) &#43; 流处理器（里面有很多 cuda core），通过PCIE与cpu连接  sm(流处理器) 存储 globalmem-&amp;gt;L2-&amp;gt;L1/SMEM/C -&amp;gt; 寄存器 gpu之间可以通过nv link(40GB/s)，避免pcie慢速  cuda编程：主函数: host(cpu)-&amp;gt;kernel(gpu)-&amp;gt;host(单线程)  Nvcc编译，__global____标识gpu程序入口 显存分配cudaMalloc cudaMemset cudaFree 数据从cpu端-&amp;gt;显存，__host__ cudaMemcpy() 异步拷贝：cudaMemoryAsync 现有技术： 从ssd直接读入显存，从另一个服务器的gpu通过网卡直接读入本机gpu，不需要经过cpu处理 运行模型：1.Grid，包含很多block，2.block(单个流处理器中)包含很多thread &amp;lt;&amp;lt;&amp;lt;Grid, Block&amp;gt;&amp;gt;&amp;gt; 在main函数中指定grid，block个数(并发使用，如果sm间没有数据交互，优先使用SM(也就是Grid尽量大)) thread_idx = blockidx.x * blockdim.x &#43; threadidx.x 推荐尽量多的使用线程，而不是根据sm数量分配线程   cuda优化 cudnn：深度学习相关库
+cublas：矩阵相乘
+cuSPARSE: 稀疏矩阵计算
+NCCL: 自动化处理多GPU数据传输
+TensorRT: 重要
+TensorRT  Fuse network layers(FP16 与 INT8) 1.5-4倍加速比 Onnx/tensor模型文件-&amp;gt;build(自动调优)-&amp;gt;deploy  优化手段：  vec相乘-&amp;gt;矩阵相乘
+ 使用评估工具，内存带宽瓶颈 or 计算瓶颈" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://sunstrikes.github.io/post/cuda/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.368a6e90.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="" />
+<meta property="og:description" content="Gpu 适合大规模并行计算场景 cpu更适合串行任务优化&amp;线程数量少 gpu结构：global memory (显存) &#43; 流处理器（里面有很多 cuda core），通过PCIE与cpu连接  sm(流处理器) 存储 globalmem-&gt;L2-&gt;L1/SMEM/C -&gt; 寄存器 gpu之间可以通过nv link(40GB/s)，避免pcie慢速  cuda编程：主函数: host(cpu)-&gt;kernel(gpu)-&gt;host(单线程)  Nvcc编译，__global____标识gpu程序入口 显存分配cudaMalloc cudaMemset cudaFree 数据从cpu端-&gt;显存，__host__ cudaMemcpy() 异步拷贝：cudaMemoryAsync 现有技术： 从ssd直接读入显存，从另一个服务器的gpu通过网卡直接读入本机gpu，不需要经过cpu处理 运行模型：1.Grid，包含很多block，2.block(单个流处理器中)包含很多thread &lt;&lt;&lt;Grid, Block&gt;&gt;&gt; 在main函数中指定grid，block个数(并发使用，如果sm间没有数据交互，优先使用SM(也就是Grid尽量大)) thread_idx = blockidx.x * blockdim.x &#43; threadidx.x 推荐尽量多的使用线程，而不是根据sm数量分配线程   cuda优化 cudnn：深度学习相关库
+cublas：矩阵相乘
+cuSPARSE: 稀疏矩阵计算
+NCCL: 自动化处理多GPU数据传输
+TensorRT: 重要
+TensorRT  Fuse network layers(FP16 与 INT8) 1.5-4倍加速比 Onnx/tensor模型文件-&gt;build(自动调优)-&gt;deploy  优化手段：  vec相乘-&gt;矩阵相乘
+ 使用评估工具，内存带宽瓶颈 or 计算瓶颈" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sunstrikes.github.io/post/cuda/" />
+
+
+<meta itemprop="name" content="">
+<meta itemprop="description" content="Gpu 适合大规模并行计算场景 cpu更适合串行任务优化&amp;线程数量少 gpu结构：global memory (显存) &#43; 流处理器（里面有很多 cuda core），通过PCIE与cpu连接  sm(流处理器) 存储 globalmem-&gt;L2-&gt;L1/SMEM/C -&gt; 寄存器 gpu之间可以通过nv link(40GB/s)，避免pcie慢速  cuda编程：主函数: host(cpu)-&gt;kernel(gpu)-&gt;host(单线程)  Nvcc编译，__global____标识gpu程序入口 显存分配cudaMalloc cudaMemset cudaFree 数据从cpu端-&gt;显存，__host__ cudaMemcpy() 异步拷贝：cudaMemoryAsync 现有技术： 从ssd直接读入显存，从另一个服务器的gpu通过网卡直接读入本机gpu，不需要经过cpu处理 运行模型：1.Grid，包含很多block，2.block(单个流处理器中)包含很多thread &lt;&lt;&lt;Grid, Block&gt;&gt;&gt; 在main函数中指定grid，block个数(并发使用，如果sm间没有数据交互，优先使用SM(也就是Grid尽量大)) thread_idx = blockidx.x * blockdim.x &#43; threadidx.x 推荐尽量多的使用线程，而不是根据sm数量分配线程   cuda优化 cudnn：深度学习相关库
+cublas：矩阵相乘
+cuSPARSE: 稀疏矩阵计算
+NCCL: 自动化处理多GPU数据传输
+TensorRT: 重要
+TensorRT  Fuse network layers(FP16 与 INT8) 1.5-4倍加速比 Onnx/tensor模型文件-&gt;build(自动调优)-&gt;deploy  优化手段：  vec相乘-&gt;矩阵相乘
+ 使用评估工具，内存带宽瓶颈 or 计算瓶颈">
+
+
+
+<meta itemprop="wordCount" content="89">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="Gpu 适合大规模并行计算场景 cpu更适合串行任务优化&amp;线程数量少 gpu结构：global memory (显存) &#43; 流处理器（里面有很多 cuda core），通过PCIE与cpu连接  sm(流处理器) 存储 globalmem-&gt;L2-&gt;L1/SMEM/C -&gt; 寄存器 gpu之间可以通过nv link(40GB/s)，避免pcie慢速  cuda编程：主函数: host(cpu)-&gt;kernel(gpu)-&gt;host(单线程)  Nvcc编译，__global____标识gpu程序入口 显存分配cudaMalloc cudaMemset cudaFree 数据从cpu端-&gt;显存，__host__ cudaMemcpy() 异步拷贝：cudaMemoryAsync 现有技术： 从ssd直接读入显存，从另一个服务器的gpu通过网卡直接读入本机gpu，不需要经过cpu处理 运行模型：1.Grid，包含很多block，2.block(单个流处理器中)包含很多thread &lt;&lt;&lt;Grid, Block&gt;&gt;&gt; 在main函数中指定grid，block个数(并发使用，如果sm间没有数据交互，优先使用SM(也就是Grid尽量大)) thread_idx = blockidx.x * blockdim.x &#43; threadidx.x 推荐尽量多的使用线程，而不是根据sm数量分配线程   cuda优化 cudnn：深度学习相关库
+cublas：矩阵相乘
+cuSPARSE: 稀疏矩阵计算
+NCCL: 自动化处理多GPU数据传输
+TensorRT: 重要
+TensorRT  Fuse network layers(FP16 与 INT8) 1.5-4倍加速比 Onnx/tensor模型文件-&gt;build(自动调优)-&gt;deploy  优化手段：  vec相乘-&gt;矩阵相乘
+ 使用评估工具，内存带宽瓶颈 or 计算瓶颈"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Sun.StriKE&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Sun.StriKE&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title"></h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 0001-01-01 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#cuda优化">cuda优化</a>
+<ul>
+<li><a href="#tensorrt">TensorRT</a></li>
+<li><a href="#优化手段">优化手段：</a>
+<ul>
+<li><a href="#内存瓶颈">内存瓶颈</a></li>
+<li><a href="#延迟受限">延迟受限</a></li>
+<li><a href="#指令优化">指令优化</a></li>
+<li><a href="#数据传输优化">数据传输优化</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<ol>
+<li>Gpu 适合大规模并行计算场景  cpu更适合串行任务优化&amp;线程数量少</li>
+<li>gpu结构：global memory (显存) + 流处理器（里面有很多 cuda core），通过PCIE与cpu连接
+
+<ol>
+<li>sm(流处理器)</li>
+<li>存储 globalmem-&gt;L2-&gt;L1/SMEM/C -&gt; 寄存器</li>
+<li>gpu之间可以通过nv link(40GB/s)，避免pcie慢速</li>
+</ol></li>
+<li>cuda编程：主函数: host(cpu)-&gt;kernel(gpu)-&gt;host(单线程)
+
+<ol>
+<li>Nvcc编译，<code>__global__</code>__标识gpu程序入口</li>
+<li>显存分配<code>cudaMalloc</code> <code>cudaMemset</code> <code>cudaFree</code></li>
+<li>数据从cpu端-&gt;显存，<code>__host__ cudaMemcpy()</code>  异步拷贝：<code>cudaMemoryAsync</code></li>
+<li>现有技术： 从ssd直接读入显存，从另一个服务器的gpu通过网卡直接读入本机gpu，不需要经过cpu处理</li>
+<li>运行模型：1.Grid，包含很多block，2.block(单个流处理器中)包含很多thread</li>
+<li><code>&lt;&lt;&lt;Grid, Block&gt;&gt;&gt;</code> 在main函数中指定grid，block个数(并发使用，如果sm间没有数据交互，优先使用SM(也就是Grid尽量大))  thread_idx = blockidx.x * blockdim.x + threadidx.x</li>
+<li>推荐尽量多的使用线程，而不是根据sm数量分配线程</li>
+</ol></li>
+</ol>
+
+<h3 id="cuda优化">cuda优化</h3>
+
+<p>cudnn：深度学习相关库</p>
+
+<p>cublas：矩阵相乘</p>
+
+<p>cuSPARSE: 稀疏矩阵计算</p>
+
+<p>NCCL: 自动化处理多GPU数据传输</p>
+
+<p>TensorRT: 重要</p>
+
+<h4 id="tensorrt">TensorRT</h4>
+
+<ol>
+<li>Fuse network layers(FP16 与 INT8) 1.5-4倍加速比</li>
+<li>Onnx/tensor模型文件-&gt;build(自动调优)-&gt;deploy</li>
+</ol>
+
+<h4 id="优化手段">优化手段：</h4>
+
+<ol>
+<li><p>vec相乘-&gt;矩阵相乘</p></li>
+
+<li><p>使用评估工具，内存带宽瓶颈 or 计算瓶颈</p></li>
+</ol>
+
+<h5 id="内存瓶颈">内存瓶颈</h5>
+
+<ol>
+<li>warp是内存访问单位，32B为一个块，抓进来的warp有一部分数据是程序不需要的，存在一部分的访问浪费</li>
+<li>主要避免：非连续的内存分配，这样读入数据会浪费大量的内存带宽</li>
+<li>Texture 纹理缓存，只读的</li>
+<li>shared memory 用户可控，可以用于多个线程间的数据同步</li>
+</ol>
+
+<h5 id="延迟受限">延迟受限</h5>
+
+<ol>
+<li>需要足够多的warp隐藏延迟（重点）</li>
+<li>使用低延迟指令代替高延迟指令</li>
+<li>Occupancy calculator 延迟计算工具，occpancy不是越大越好</li>
+</ol>
+
+<h5 id="指令优化">指令优化</h5>
+
+<ol>
+<li>指令计算误用，int32-&gt;double性能会急剧下降</li>
+<li>分支语句优化，把所有的if放到一个warp，所有else放到一个warp，避免一个warp既走if又走else</li>
+<li>需要注意 使用float而不是double，如1.0f</li>
+<li>特殊函数，cos，平方等，精度要求不高的操作 <code>__func()</code>计算速度要高于普通func</li>
+</ol>
+
+<h5 id="数据传输优化">数据传输优化</h5>
+
+<ol>
+<li><p>尽量避免cpu-&gt;gpu数据搬移</p></li>
+
+<li><p>小量数据传输进行打包，批量传输</p></li>
+
+<li><p>async方式的数据传输，cpu需要使用pinned(不会分页) memory，即不适用malloc, 数据传输效率提升70%左右</p></li>
+</ol>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Sun.StriKE</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        0001-01-01
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/pandas/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">pandas使用</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/feed%E6%95%B4%E4%BD%93%E4%BB%8B%E7%BB%8D/">
+            <span class="next-text nav-default"></span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+  <span id="/post/cuda/" class="leancloud_visitors" data-flag-title="">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'gByHJOoMt4M4WCoHEznYmd8f-gzGzoHsz',
+        appKey: 'S95cz7uUC0z5lN06564jD0mf',
+        notify:  true , 
+        verify:  false , 
+        avatar:'mm', 
+        placeholder: '说点什么吧...',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="sunstrikes@outlook.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/sunstrikes/" class="iconfont icon-github" title="github"></a>
+  <a href="https://sunstrikes.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Sun.StriKE</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
